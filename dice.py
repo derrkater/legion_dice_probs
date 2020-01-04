@@ -1,5 +1,4 @@
-import collections
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import List
 
 import dice_symbols as sym
@@ -7,18 +6,8 @@ import prob_dist
 
 
 class Douse(prob_dist.ProbDist, ABC):
-    def __init__(self, mapping=None, **kwargs):
-        mapping = mapping or collections.Counter(self.get_sides())
-        super().__init__(mapping, **kwargs)
-
-    @classmethod
-    def get_prob_dist(cls):
-        return prob_dist.ProbDist(mapping=collections.Counter(cls.get_sides()))
-
-    @classmethod
-    @abstractmethod
-    def get_sides(cls) -> List[sym.Symbol]:
-        raise NotImplementedError
+    def __init__(self, **kwargs):
+        super().__init__(self.events_list, **kwargs)
 
 
 class AttackDouse(Douse, ABC):
@@ -26,8 +15,9 @@ class AttackDouse(Douse, ABC):
 
 
 class RedAttackDouse(AttackDouse):
-    @classmethod
-    def get_sides(cls) -> List[sym.Symbol]:
+
+    @property
+    def events_list(self) -> List[sym.Symbol]:
         return [
             sym.Crit,
             sym.Surge,
@@ -41,8 +31,8 @@ class RedAttackDouse(AttackDouse):
 
 
 class BlackAttackDouse(AttackDouse):
-    @classmethod
-    def get_sides(cls) -> List[sym.Symbol]:
+    @property
+    def events_list(self) -> List[sym.Symbol]:
         return [
             sym.Crit,
             sym.Surge,
@@ -56,8 +46,8 @@ class BlackAttackDouse(AttackDouse):
 
 
 class WhiteAttackDouse(AttackDouse):
-    @classmethod
-    def get_sides(cls) -> List[sym.Symbol]:
+    @property
+    def events_list(self) -> List[sym.Symbol]:
         return [
             sym.Crit,
             sym.Surge,
@@ -71,12 +61,30 @@ class WhiteAttackDouse(AttackDouse):
 
 
 class DefenceDouse(Douse, ABC):
-    raise NotImplementedError
+    pass
 
 
 class RedDefenceDouse(DefenceDouse):
-    raise NotImplementedError
+    @property
+    def events_list(self) -> List[sym.Symbol]:
+        return [
+            sym.Surge,
+            sym.Block,
+            sym.Block,
+            sym.Block,
+            sym.Blank,
+            sym.Blank,
+        ]
 
 
 class WhiteDefenceDouse(DefenceDouse):
-    raise NotImplementedError
+    @property
+    def events_list(self) -> List[sym.Symbol]:
+        return [
+            sym.Surge,
+            sym.Block,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
+        ]
