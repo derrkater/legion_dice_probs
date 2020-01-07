@@ -2,7 +2,7 @@ import dice_colors as col
 
 
 class Symbol:
-    def __init__(self, color: col.Color):
+    def __init__(self, color: type(col.Color)):
         self.color = color
 
     def __repr__(self):

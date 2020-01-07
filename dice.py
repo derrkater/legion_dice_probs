@@ -2,6 +2,7 @@ import collections
 from abc import ABC
 from typing import List
 
+import dice_colors as col
 import dice_pool
 import dice_symbols as sym
 import prob_dist
@@ -35,48 +36,53 @@ class AttackDouse(Douse, ABC):
 
 
 class RedAttackDouse(AttackDouse):
+    color = col.Red
 
     @property
     def events_list(self) -> List[sym.Symbol]:
         return [
-            sym.Crit(),
-            sym.Surge(),
-            sym.Hit(),
-            sym.Hit(),
-            sym.Hit(),
-            sym.Hit(),
-            sym.Hit(),
-            sym.Blank(),
+            sym.Crit(self.color),
+            sym.Surge(self.color),
+            sym.Hit(self.color),
+            sym.Hit(self.color),
+            sym.Hit(self.color),
+            sym.Hit(self.color),
+            sym.Hit(self.color),
+            sym.Blank(self.color),
         ]
 
 
 class BlackAttackDouse(AttackDouse):
+    color = col.Black
+
     @property
     def events_list(self) -> List[sym.Symbol]:
         return [
-            sym.Crit(),
-            sym.Surge(),
-            sym.Hit(),
-            sym.Hit(),
-            sym.Hit(),
-            sym.Blank(),
-            sym.Blank(),
-            sym.Blank(),
+            sym.Crit(self.color),
+            sym.Surge(self.color),
+            sym.Hit(self.color),
+            sym.Hit(self.color),
+            sym.Hit(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
         ]
 
 
 class WhiteAttackDouse(AttackDouse):
+    color = col.White
+
     @property
     def events_list(self) -> List[sym.Symbol]:
         return [
-            sym.Crit(),
-            sym.Surge(),
-            sym.Hit(),
-            sym.Blank(),
-            sym.Blank(),
-            sym.Blank(),
-            sym.Blank(),
-            sym.Blank(),
+            sym.Crit(self.color),
+            sym.Surge(self.color),
+            sym.Hit(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
         ]
 
 
@@ -85,26 +91,30 @@ class DefenceDouse(Douse, ABC):
 
 
 class RedDefenceDouse(DefenceDouse):
+    color = col.Red
+
     @property
     def events_list(self) -> List[sym.Symbol]:
         return [
-            sym.Surge(),
-            sym.Block(),
-            sym.Block(),
-            sym.Block(),
-            sym.Blank(),
-            sym.Blank(),
+            sym.Surge(self.color),
+            sym.Block(self.color),
+            sym.Block(self.color),
+            sym.Block(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
         ]
 
 
 class WhiteDefenceDouse(DefenceDouse):
+    color = col.White
+
     @property
     def events_list(self) -> List[sym.Symbol]:
         return [
-            sym.Surge(),
-            sym.Block(),
-            sym.Blank(),
-            sym.Blank(),
-            sym.Blank(),
-            sym.Blank(),
+            sym.Surge(self.color),
+            sym.Block(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
+            sym.Blank(self.color),
         ]

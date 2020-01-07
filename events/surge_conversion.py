@@ -1,13 +1,14 @@
 from typing import Union
 
+import dice_colors as col
 import dice_symbols as sym
-from events import event
 import roll_result
+from events import event
 
 
 class SurgeConversion(event.EventDeterministic):
     @classmethod
-    def get_target_symbol(cls):
+    def get_target_symbol(cls, color: type(col.Color)):
         raise NotImplementedError
 
     @classmethod
@@ -18,30 +19,30 @@ class SurgeConversion(event.EventDeterministic):
         if issubclass(type(prob_dist_key), roll_result.RollResult):
             return cls.apply(prob_dist_key, target_cls=roll_result.RollResult.from_counter)
         elif isinstance(prob_dist_key, sym.Surge):
-            return cls.get_target_symbol()
+            return cls.get_target_symbol(prob_dist_key.color)
         else:
             return prob_dist_key
 
 
 class NoSurgeConversion(SurgeConversion):
     @classmethod
-    def get_target_symbol(cls):
-        return sym.Blank()
+    def get_target_symbol(cls, color: type(col.Color)):
+        return sym.Blank(color)
 
 
 class SurgeToHitConversion(SurgeConversion):
     @classmethod
-    def get_target_symbol(cls):
-        return sym.Hit()
+    def get_target_symbol(cls, color: type(col.Color)):
+        return sym.Hit(color)
 
 
 class SurgeToCritConversion(SurgeConversion):
     @classmethod
-    def get_target_symbol(cls):
-        return sym.Crit()
+    def get_target_symbol(cls, color: type(col.Color)):
+        return sym.Crit(color)
 
 
 class SurgeToDodgeConversion(SurgeConversion):
     @classmethod
-    def get_target_symbol(cls):
-        return sym.Block()
+    def get_target_symbol(cls, color: type(col.Color)):
+        return sym.Block(color)
