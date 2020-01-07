@@ -5,13 +5,13 @@ from events import event
 import roll_results
 
 
-class SurgeConversion(event.EventOnKeys):
+class SurgeConversion(event.EventDeterministic):
     @classmethod
     def get_target_symbol(cls):
         raise NotImplementedError
 
     @classmethod
-    def event_on_keys(cls, prob_dist_key: Union[sym.Symbol, roll_results.RollResult]):
+    def deterministic_event_on_key(cls, prob_dist_key: Union[sym.Symbol, roll_results.RollResult]):
         if not isinstance(prob_dist_key, sym.Symbol) and not issubclass(type(prob_dist_key), roll_results.RollResult):
             raise ValueError(f'Event {cls} cannot be applied to {prob_dist_key}.')
 
