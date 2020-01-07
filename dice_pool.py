@@ -1,10 +1,8 @@
-import itertools as it
 from abc import ABC
 
 import dice
 import prob_dist
 import roll_results
-import utils
 
 
 class DiceNumberNegativeError(ValueError):

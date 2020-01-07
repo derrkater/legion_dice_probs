@@ -24,10 +24,7 @@ class Douse(prob_dist.ProbDist, ABC):
         return lambda x, y: roll_results.RollResult([x, y])
 
     def __add__(self, other):
-        if issubclass(other.__class__, Douse):
-            # prod = it.product(self.events_list, other.events_list)
-            # prod_roll_results = [roll_results.RollResult(r) for r in prod]
-            # return dice_pool.DicePool(prod_roll_results)
+        if issubclass(type(other), Douse) or issubclass(type(other), dice_pool.DicePool):
             return super().__add__(other)
         else:
             super().__add__(other)
