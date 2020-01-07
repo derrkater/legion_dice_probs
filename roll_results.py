@@ -27,6 +27,13 @@ class RollResult(Counter):
         self._results_list = [symbol for r in self._results_list for symbol in r]
         super().__init__(self._results_list)
 
+    @classmethod
+    def from_counter(cls, counter) -> "RollResult":
+        results_list = []
+        for key, val in counter.items():
+            results_list.extend([key] * val)
+        return cls(results_list)
+
     def __hash__(self):
         return hash(frozenset(self.items()))
 

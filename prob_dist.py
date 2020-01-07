@@ -31,10 +31,6 @@ class ProbDist(collections.Counter):
         return cls(collections.Counter(events_list))
 
     @property
-    def events_list(self):
-        return self._events_list
-
-    @property
     def aggregation_class(self):
         return ProbDist
 

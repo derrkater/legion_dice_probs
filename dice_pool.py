@@ -5,14 +5,6 @@ import prob_dist
 import roll_results
 
 
-class DiceNumberNegativeError(ValueError):
-    pass
-
-
-class DicePoolEmptyError(ValueError):
-    pass
-
-
 class DicePool(prob_dist.ProbDist, ABC):
     @property
     def aggregation_class(self):
