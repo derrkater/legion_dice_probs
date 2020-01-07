@@ -1,6 +1,6 @@
 from pprint import pprint
 
-import surge_conversion
+from events import surge_conversion
 from dice import RedAttackDouse
 
 pprint(RedAttackDouse())

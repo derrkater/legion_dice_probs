@@ -1,7 +1,7 @@
 from typing import Union
 
 import dice_symbols as sym
-import event
+from events import event
 import roll_results
 
 
