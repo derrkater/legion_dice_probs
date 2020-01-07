@@ -2,7 +2,7 @@ from typing import Union
 
 import dice_symbols as sym
 from events import event
-import roll_results
+import roll_result
 
 
 class SurgeConversion(event.EventDeterministic):
@@ -11,12 +11,12 @@ class SurgeConversion(event.EventDeterministic):
         raise NotImplementedError
 
     @classmethod
-    def deterministic_event_on_key(cls, prob_dist_key: Union[sym.Symbol, roll_results.RollResult]):
-        if not isinstance(prob_dist_key, sym.Symbol) and not issubclass(type(prob_dist_key), roll_results.RollResult):
+    def deterministic_event_on_key(cls, prob_dist_key: Union[sym.Symbol, roll_result.RollResult]):
+        if not isinstance(prob_dist_key, sym.Symbol) and not issubclass(type(prob_dist_key), roll_result.RollResult):
             raise ValueError(f'Event {cls} cannot be applied to {prob_dist_key}.')
 
-        if issubclass(type(prob_dist_key), roll_results.RollResult):
-            return cls.apply(prob_dist_key, target_cls=roll_results.RollResult.from_counter)
+        if issubclass(type(prob_dist_key), roll_result.RollResult):
+            return cls.apply(prob_dist_key, target_cls=roll_result.RollResult.from_counter)
         elif isinstance(prob_dist_key, sym.Surge):
             return cls.get_target_symbol()
         else:

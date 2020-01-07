@@ -5,7 +5,7 @@ from typing import List
 import dice_pool
 import dice_symbols as sym
 import prob_dist
-import roll_results
+import roll_result
 
 
 class Douse(prob_dist.ProbDist, ABC):
@@ -21,7 +21,7 @@ class Douse(prob_dist.ProbDist, ABC):
 
     @property
     def keys_merge_function(self):
-        return lambda x, y: roll_results.RollResult([x, y])
+        return lambda x, y: roll_result.RollResult([x, y])
 
     def __add__(self, other):
         if issubclass(type(other), Douse) or issubclass(type(other), dice_pool.DicePool):
