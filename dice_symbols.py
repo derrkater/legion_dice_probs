@@ -1,8 +1,12 @@
-from abc import ABC
+class Symbol:
+    def __repr__(self):
+        return str(self.__class__.__name__)
 
+    def __eq__(self, other):
+        return self.__class__.__name__ == other.__class__.__name__
 
-class Symbol(ABC):
-    pass
+    def __hash__(self):
+        return hash(self.__class__.__name__)
 
 
 class Crit(Symbol):

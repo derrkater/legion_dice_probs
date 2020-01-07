@@ -1,5 +1,8 @@
-from abc import ABC
-from dataclasses import dataclass
+from collections import Counter
+from typing import List, Union
+
+import dice
+import dice_symbols as sym
 
 
 class ResultNegativeError(ValueError):
@@ -10,52 +13,27 @@ class DiceResultEmptyError(ValueError):
     pass
 
 
-@dataclass
-class RollResult(ABC):
-    n_surge: int = 0
-    n_blank: int = 0
+class RollResult(Counter):
+    def __init__(self, results_list: List[Union[sym.Symbol, "RollResult"]]):
+        if any(
+                (
+                        not issubclass(type(r), sym.Symbol) and
+                        not issubclass(type(r), RollResult)
+                ) for r in results_list
+        ):
+            raise ValueError(f'All inputs should be {sym.Symbol} or {RollResult}. [{results_list}]')
 
-    def __post_init__(self):
-        if self.n_surge < 0 or self.n_blank < 0:
-            raise ResultNegativeError
+        self._results_list = [[r] if issubclass(type(r), sym.Symbol) else r._results_list for r in results_list]
+        self._results_list = [symbol for r in self._results_list for symbol in r]
+        super().__init__(self._results_list)
 
-    @property
-    def n_results(self):
-        return self.n_surge + self.n_blank
+    def __hash__(self):
+        return hash(frozenset(self.items()))
 
-
-@dataclass
-class AttackRollResult(RollResult):
-    n_crit: int = 0
-    n_hit: int = 0
-
-    def __post_init__(self):
-        super().__post_init__()
-
-        if self.n_hit < 0 or self.n_crit < 0:
-            raise ResultNegativeError
-
-        if not self.n_results:
-            raise DiceResultEmptyError
-
-    @property
-    def n_results(self):
-        return super().n_results + self.n_crit + self.n_hit
-
-
-@dataclass
-class DefenceRollResult(RollResult):
-    n_block: int = 0
-
-    def __post_init__(self):
-        super().__post_init__()
-
-        if self.n_block < 0:
-            raise ResultNegativeError
-
-        if not self.n_results:
-            raise DiceResultEmptyError
-
-    @property
-    def n_results(self):
-        return super().n_results + self.n_block
+    def __add__(self, other):
+        if issubclass(other.__class__, RollResult):
+            return RollResult(self._results_list + other._results_list)
+        elif issubclass(other.__class__, dice.Douse):
+            return RollResult(self._results_list + other.events_list)
+        else:
+            raise ValueError(f'Does not support type {other.__class__}.')
