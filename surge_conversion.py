@@ -16,9 +16,7 @@ class SurgeConversion(event.EventOnKeys):
             raise ValueError(f'Event {cls} cannot be applied to {prob_dist_key}.')
 
         if issubclass(type(prob_dist_key), roll_results.RollResult):
-            transformed_roll_result = cls.apply(prob_dist_key, target_cls=roll_results.RollResult.from_counter)
-            print(transformed_roll_result)
-            return transformed_roll_result
+            return cls.apply(prob_dist_key, target_cls=roll_results.RollResult.from_counter)
         elif isinstance(prob_dist_key, sym.Surge):
             return cls.get_target_symbol()
         else:
