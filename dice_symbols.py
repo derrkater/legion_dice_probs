@@ -1,11 +1,18 @@
 from typing import Optional
 
-import dice_colors as col
+# import dice
 
 
 class Symbol:
-    def __init__(self, color: Optional[type(col.Color)] = None):
-        self.color = color
+    # def __init__(self, douse: Optional[dice.Douse] = None):
+    def __init__(self, douse):
+        self.douse = douse
+
+    @property
+    def color(self):
+        if self.douse is None:
+            return None
+        return self.douse.color
 
     def __repr__(self):
         # return str(self.__class__.__name__)
@@ -17,7 +24,7 @@ class Symbol:
         return self.__class__.__name__ == other.__class__.__name__
 
     def __hash__(self):
-        return hash(f'{self.__class__.__name__}_{self.color}')
+        return hash(self.__repr__())
 
 
 class Crit(Symbol):

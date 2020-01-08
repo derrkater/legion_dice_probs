@@ -22,7 +22,7 @@ class SurgeConversion(event.EventDeterministic):
                 target_cls=roll_result.RollResult.from_counter
             )
         elif isinstance(prob_dist_key, sym.Surge):
-            return cls.get_target_symbol(prob_dist_key.color)
+            return cls.get_target_symbol(prob_dist_key.douse)
         else:
             return prob_dist_key
 

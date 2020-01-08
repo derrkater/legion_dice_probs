@@ -10,11 +10,24 @@ import roll_result
 
 
 class Douse(prob_dist.ProbDist, ABC):
+
     def __init__(self, **kwargs):
         super().__init__(
             collections.Counter(self.events_list),
             **kwargs
         )
+
+    @property
+    def color(self):
+        raise NotImplementedError
+
+    @property
+    def _symbols_list(self) -> List[type(sym.Symbol)]:
+        raise NotImplementedError
+
+    @property
+    def events_list(self) -> List[sym.Symbol]:
+        return [symbol_cls(self) for symbol_cls in self._symbols_list]
 
     @property
     def aggregation_class(self):
@@ -36,53 +49,59 @@ class AttackDouse(Douse, ABC):
 
 
 class RedAttackDouse(AttackDouse):
-    color = col.Red()
+    @property
+    def color(self):
+        return col.Red()
 
     @property
-    def events_list(self) -> List[sym.Symbol]:
+    def _symbols_list(self) -> List[type(sym.Symbol)]:
         return [
-            sym.Crit(self.color),
-            sym.Surge(self.color),
-            sym.Hit(self.color),
-            sym.Hit(self.color),
-            sym.Hit(self.color),
-            sym.Hit(self.color),
-            sym.Hit(self.color),
-            sym.Blank(self.color),
+            sym.Crit,
+            sym.Surge,
+            sym.Hit,
+            sym.Hit,
+            sym.Hit,
+            sym.Hit,
+            sym.Hit,
+            sym.Blank,
         ]
 
 
 class BlackAttackDouse(AttackDouse):
-    color = col.Black()
+    @property
+    def color(self):
+        return col.Black()
 
     @property
-    def events_list(self) -> List[sym.Symbol]:
+    def _symbols_list(self) -> List[type(sym.Symbol)]:
         return [
-            sym.Crit(self.color),
-            sym.Surge(self.color),
-            sym.Hit(self.color),
-            sym.Hit(self.color),
-            sym.Hit(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
+            sym.Crit,
+            sym.Surge,
+            sym.Hit,
+            sym.Hit,
+            sym.Hit,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
         ]
 
 
 class WhiteAttackDouse(AttackDouse):
-    color = col.White()
+    @property
+    def color(self):
+        return col.White()
 
     @property
-    def events_list(self) -> List[sym.Symbol]:
+    def _symbols_list(self) -> List[type(sym.Symbol)]:
         return [
-            sym.Crit(self.color),
-            sym.Surge(self.color),
-            sym.Hit(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
+            sym.Crit,
+            sym.Surge,
+            sym.Hit,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
         ]
 
 
@@ -91,30 +110,34 @@ class DefenceDouse(Douse, ABC):
 
 
 class RedDefenceDouse(DefenceDouse):
-    color = col.Red()
+    @property
+    def color(self):
+        return col.Red()
 
     @property
-    def events_list(self) -> List[sym.Symbol]:
+    def _symbols_list(self) -> List[type(sym.Symbol)]:
         return [
-            sym.Surge(self.color),
-            sym.Block(self.color),
-            sym.Block(self.color),
-            sym.Block(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
+            sym.Surge,
+            sym.Block,
+            sym.Block,
+            sym.Block,
+            sym.Blank,
+            sym.Blank,
         ]
 
 
 class WhiteDefenceDouse(DefenceDouse):
-    color = col.White()
+    @property
+    def color(self):
+        return col.White()
 
     @property
-    def events_list(self) -> List[sym.Symbol]:
+    def _symbols_list(self) -> List[type(sym.Symbol)]:
         return [
-            sym.Surge(self.color),
-            sym.Block(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
-            sym.Blank(self.color),
+            sym.Surge,
+            sym.Block,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
+            sym.Blank,
         ]

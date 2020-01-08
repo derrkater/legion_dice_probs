@@ -16,7 +16,7 @@ class RemoveColorsEvent(event.EventDeterministic):
                 prob_dist_key,
                 target_cls=rr.RollResult.from_counter
             )
-        elif issubclass(type(prob_dist_key), sym.Symbol):
-            return prob_dist_key.__class__(color=None)
+        elif isinstance(prob_dist_key, sym.Symbol):
+            return prob_dist_key.__class__(douse=None)
         else:
-            raise NotImplementedError
+            raise NotImplementedError()
