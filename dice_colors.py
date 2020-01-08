@@ -2,6 +2,9 @@ class Color:
     def __repr__(self):
         return str(self.__class__.__name__)
 
+    def __str__(self):
+        return self.__repr__()
+
     def __eq__(self, other):
         return self.__class__.__name__ == other.__class__.__name__
 

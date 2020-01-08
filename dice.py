@@ -36,7 +36,7 @@ class AttackDouse(Douse, ABC):
 
 
 class RedAttackDouse(AttackDouse):
-    color = col.Red
+    color = col.Red()
 
     @property
     def events_list(self) -> List[sym.Symbol]:
@@ -53,7 +53,7 @@ class RedAttackDouse(AttackDouse):
 
 
 class BlackAttackDouse(AttackDouse):
-    color = col.Black
+    color = col.Black()
 
     @property
     def events_list(self) -> List[sym.Symbol]:
@@ -70,7 +70,7 @@ class BlackAttackDouse(AttackDouse):
 
 
 class WhiteAttackDouse(AttackDouse):
-    color = col.White
+    color = col.White()
 
     @property
     def events_list(self) -> List[sym.Symbol]:
@@ -91,7 +91,7 @@ class DefenceDouse(Douse, ABC):
 
 
 class RedDefenceDouse(DefenceDouse):
-    color = col.Red
+    color = col.Red()
 
     @property
     def events_list(self) -> List[sym.Symbol]:
@@ -106,7 +106,7 @@ class RedDefenceDouse(DefenceDouse):
 
 
 class WhiteDefenceDouse(DefenceDouse):
-    color = col.White
+    color = col.White()
 
     @property
     def events_list(self) -> List[sym.Symbol]:
