@@ -5,14 +5,6 @@ import dice
 import dice_symbols as sym
 
 
-class ResultNegativeError(ValueError):
-    pass
-
-
-class DiceResultEmptyError(ValueError):
-    pass
-
-
 class RollResult(Counter):
     def __init__(self, results_list: List[Union[sym.Symbol, "RollResult"]]):
         if any(

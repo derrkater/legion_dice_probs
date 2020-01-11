@@ -1,12 +1,22 @@
 import collections
 import fractions
-from typing import Counter
+from copy import deepcopy
+from typing import Counter, List
 
 import utils
 
 
 class NegativeProbabilityError(ValueError):
     pass
+
+
+class StochasticState:
+    def __init__(self, prob_dist: "ProbDist"):
+        self._prob_dist = prob_dist
+
+    @property
+    def prob_dist(self):
+        return deepcopy(self._prob_dist)
 
 
 class ProbDist(collections.Counter):
@@ -16,9 +26,9 @@ class ProbDist(collections.Counter):
     from: http://practicallypredictable.com/2017/12/04/probability-distributions-dice-rolls/
     """
 
-    def __init__(self, mapping: Counter, **kwargs):
+    def __init__(self, mapping: Counter[StochasticState], **kwargs):
         super().__init__()
-        self._counter = mapping
+        self._counter: Counter[StochasticState] = mapping
         self.update(mapping, **kwargs)
         total = sum(self.values())
         for event in self:
@@ -27,8 +37,8 @@ class ProbDist(collections.Counter):
             self[event] = fractions.Fraction(self[event], total)
 
     @classmethod
-    def from_events_list(cls, events_list):
-        return cls(collections.Counter(events_list))
+    def from_events_list(cls, states_list: List[StochasticState]):
+        return cls(collections.Counter(states_list))
 
     @property
     def aggregation_class(self):
