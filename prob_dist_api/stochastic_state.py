@@ -1,5 +1,19 @@
 import abc
+import fractions
+
+from prob_dist_api import probability_distribution as pd
 
 
-class StochasticState(abc.ABC):
-    pass
+class StochasticState:
+    def get_probability_distribution(self) -> pd.ProbabilityDistribution:
+        return pd.ProbabilityDistribution(
+            {
+                self: fractions.Fraction(1)
+            }
+        )
+
+
+class StochasticStateReusable(StochasticState, abc.ABC):
+    @abc.abstractmethod
+    def get_probability_distribution_reused(self):
+        raise NotImplementedError
