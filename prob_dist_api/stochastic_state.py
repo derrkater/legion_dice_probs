@@ -15,5 +15,5 @@ class StochasticState:
 
 class StochasticStateReusable(StochasticState, abc.ABC):
     @abc.abstractmethod
-    def get_probability_distribution_reused(self):
+    def get_probability_distribution_reused(self) -> pd.ProbabilityDistribution:
         raise NotImplementedError
