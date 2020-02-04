@@ -1,4 +1,3 @@
-import abc
 import fractions
 
 from prob_dist_api import probability_distribution as pd
@@ -11,9 +10,3 @@ class StochasticState:
                 self: fractions.Fraction(1)
             }
         )
-
-
-class StochasticStateReusable(StochasticState, abc.ABC):
-    @abc.abstractmethod
-    def get_probability_distribution_reused(self) -> pd.ProbabilityDistribution:
-        raise NotImplementedError
