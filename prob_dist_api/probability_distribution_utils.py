@@ -22,7 +22,7 @@ def aggregate_probability_distributions(
 
     for state_1, prob_1 in pd_1.as_dict.items():
         for state_2, prob_2 in pd_2.as_dict.items():
-            aggregated_state = aggregate_function(state_1, state_2)
+            aggregated_state = aggregate_function(state_1, state_2)  # TODO: resolve typing
             aggregated_pd_dict[aggregated_state] += prob_1 * prob_2
 
     return ProbabilityDistribution(aggregated_pd_dict)
