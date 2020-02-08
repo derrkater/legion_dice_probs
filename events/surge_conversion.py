@@ -1,8 +1,7 @@
 from typing import Union
 
+import dice
 import dice_colors as col
-import dice_symbols as sym
-import roll_result
 from events import event
 
 
@@ -12,16 +11,16 @@ class SurgeConversion(event.EventDeterministic):
         raise NotImplementedError
 
     @classmethod
-    def deterministic_event_on_key(cls, prob_dist_key: Union[sym.Symbol, roll_result.RollResult]):
-        if not isinstance(prob_dist_key, sym.Symbol) and not issubclass(type(prob_dist_key), roll_result.RollResult):
+    def deterministic_event_on_key(cls, prob_dist_key: Union[dice.Symbol, dice.RollResult]):
+        if not isinstance(prob_dist_key, dice.Symbol) and not issubclass(type(prob_dist_key), dice.RollResult):
             raise ValueError(f'Event {cls} cannot be applied to {prob_dist_key}.')
 
-        if issubclass(type(prob_dist_key), roll_result.RollResult):
+        if issubclass(type(prob_dist_key), dice.RollResult):
             return cls.apply(
                 prob_dist_key,
-                target_cls=roll_result.RollResult.from_counter
+                target_cls=dice.RollResult.from_counter
             )
-        elif isinstance(prob_dist_key, sym.Surge):
+        elif isinstance(prob_dist_key, dice.Surge):
             return cls.get_target_symbol(prob_dist_key.douse)
         else:
             return prob_dist_key
@@ -30,22 +29,22 @@ class SurgeConversion(event.EventDeterministic):
 class NoSurgeConversion(SurgeConversion):
     @classmethod
     def get_target_symbol(cls, color: type(col.Color)):
-        return sym.Blank(color)
+        return dice.Blank(color)
 
 
 class SurgeToHitConversion(SurgeConversion):
     @classmethod
     def get_target_symbol(cls, color: type(col.Color)):
-        return sym.Hit(color)
+        return dice.Hit(color)
 
 
 class SurgeToCritConversion(SurgeConversion):
     @classmethod
     def get_target_symbol(cls, color: type(col.Color)):
-        return sym.Crit(color)
+        return dice.Crit(color)
 
 
 class SurgeToDodgeConversion(SurgeConversion):
     @classmethod
     def get_target_symbol(cls, color: type(col.Color)):
-        return sym.Block(color)
+        return dice.Block(color)

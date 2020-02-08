@@ -13,7 +13,7 @@ class Event(ABC):
 class EventDeterministic(Event):
 
     @classmethod
-    def deterministic_event_on_key(cls, prob_dist_key):
+    def deterministic_event_on_key(cls, prob_dist_key: pd.StochasticState) -> pd.StochasticState:
         raise NotImplementedError
 
     @classmethod
@@ -28,7 +28,7 @@ class EventDeterministic(Event):
 class EventProbabilistic(Event):
 
     @classmethod
-    def probabilistic_event_on_key(cls, prob_dist_key) -> pd.ProbDist:
+    def probabilistic_event_on_key(cls, prob_dist_key: pd.StochasticState) -> pd.ProbDist:
         raise NotImplementedError
 
     @classmethod

@@ -13,4 +13,5 @@ print(len(dice_pool))
 
 pprint(surge_conversion.SurgeToHitConversion.apply(RedAttackDouse() + RedAttackDouse()))
 pprint(surge_conversion.SurgeToHitConversion.apply(RedAttackDouse() + BlackAttackDouse()))
-pprint(utility_events.RemoveColorsEvent.apply(surge_conversion.SurgeToHitConversion.apply(RedAttackDouse() + BlackAttackDouse())))
+pprint(utility_events.RemoveColorsEvent.apply(
+    surge_conversion.SurgeToHitConversion.apply(RedAttackDouse() + BlackAttackDouse())))

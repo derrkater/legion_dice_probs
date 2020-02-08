@@ -1,18 +1,17 @@
 from abc import ABC
 
 import dice
-import prob_dist
-import roll_result
+import prob_dist as pd
 
 
-class DicePool(prob_dist.ProbDist, ABC):
+class DicePool(pd.ProbDist, ABC):
     @property
     def aggregation_class(self):
         return self.__class__
 
     @property
     def keys_merge_function(self):
-        return lambda x, y: roll_result.RollResult([x, y])
+        return lambda x, y: dice.RollResult([x, y])
 
     def __add__(self, other):
         if issubclass(other.__class__, dice.Douse) or issubclass(other.__class__, DicePool):

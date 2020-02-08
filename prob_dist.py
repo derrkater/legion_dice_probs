@@ -1,6 +1,5 @@
 import collections
 import fractions
-from copy import deepcopy
 from typing import Counter, List
 
 import utils
@@ -11,12 +10,16 @@ class NegativeProbabilityError(ValueError):
 
 
 class StochasticState:
-    def __init__(self, prob_dist: "ProbDist"):
+    def __init__(self):
+        self._prob_dist = None
+
+    def in_prob_dist(self, prob_dist: "ProbDist"):
         self._prob_dist = prob_dist
 
     @property
     def prob_dist(self):
-        return deepcopy(self._prob_dist)
+        # return deepcopy(self._prob_dist)
+        return self._prob_dist
 
 
 class ProbDist(collections.Counter):
@@ -31,10 +34,11 @@ class ProbDist(collections.Counter):
         self._counter: Counter[StochasticState] = mapping
         self.update(mapping, **kwargs)
         total = sum(self.values())
-        for event in self:
-            if self[event] < 0:
+        for state in self:
+            state.in_prob_dist(self)
+            if self[state] < 0:
                 raise NegativeProbabilityError
-            self[event] = fractions.Fraction(self[event], total)
+            self[state] = fractions.Fraction(self[state], total)
 
     @classmethod
     def from_events_list(cls, states_list: List[StochasticState]):
