@@ -1,7 +1,8 @@
 import collections
 import fractions
 import operator
-from typing import Callable, DefaultDict
+from typing import Callable
+from typing import DefaultDict
 
 from prob_dist_api import stochastic_state as st_state
 from prob_dist_api.probability_distribution import ProbabilityDistribution
@@ -11,7 +12,7 @@ def aggregate_probability_distributions(
         pd_1: ProbabilityDistribution,
         pd_2: ProbabilityDistribution,
         aggregate_function: Callable[
-            [st_state.StochasticState, ...],
+            [st_state.StochasticState, st_state.StochasticState],
             st_state.StochasticState
         ] = operator.add,
 ) -> ProbabilityDistribution:
