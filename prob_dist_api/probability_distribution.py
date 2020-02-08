@@ -19,6 +19,12 @@ class ProbabilityDistribution:
 
         self._dict: Dict[Hashable, fractions.Fraction] = probability_distribution_dict
 
+    def __eq__(self, other):
+        return self.as_dict == other.as_dict
+
+    def __hash__(self):
+        return hash(self.as_frozendict)
+
     @property
     def as_dict(self) -> Dict[Hashable, fractions.Fraction]:
         return self._dict

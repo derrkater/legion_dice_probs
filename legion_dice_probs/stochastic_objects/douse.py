@@ -2,7 +2,6 @@ import abc
 from typing import List
 from typing import Optional
 
-from legion_dice_probs.probability_distributions import douse_probability_distribution as dse_pd
 from legion_dice_probs.stochastic_states import symbol as sym
 from prob_dist_api import probability_distribution as pd
 from prob_dist_api import stochastic_object as st_object
