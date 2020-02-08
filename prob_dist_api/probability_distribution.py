@@ -5,6 +5,8 @@ from typing import Dict
 from typing import Hashable
 from typing import List
 
+import frozendict
+
 
 class ProbabilityDistribution:
 
@@ -20,6 +22,10 @@ class ProbabilityDistribution:
     @property
     def as_dict(self) -> Dict[Hashable, fractions.Fraction]:
         return self._dict
+
+    @property
+    def as_frozendict(self):
+        return frozendict.frozendict(self.as_dict)
 
     @classmethod
     def from_events_counter(

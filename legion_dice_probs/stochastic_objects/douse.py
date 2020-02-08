@@ -19,7 +19,13 @@ class Douse(st_object.StochasticObject, abc.ABC):
         )
 
     def __eq__(self, other):
-        return type(self).__name__ == type(other).__name__
+        return (
+                type(self).__name__ == type(other).__name__ and
+                self.get_probability_distribution() == other.get_probability_distribution()
+        )
+
+    def __hash__(self):
+        return hash(type(self).__name__) + hash(self.get_probability_distribution())
 
     def get_default_probability_distribution(self) -> dse_pd.DouseProbabilityDistribution:
         return dse_pd.DouseProbabilityDistribution.from_events_list(
@@ -51,9 +57,9 @@ class RolledDouse(st_state.StochasticState):
 
     def __eq__(self, other):
         return (
-            self.symbol == other.symbol and
-            self.douse == other.douse
+                self.symbol == other.symbol and
+                self.douse == other.douse
         )
 
     def __hash__(self):
-        pass
+        return hash(self.symbol) + hash(self.douse)
