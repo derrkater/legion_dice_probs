@@ -39,7 +39,7 @@ class ProbabilityDistribution:
             if events_counter[state] < 0:
                 raise NegativeProbabilityError
             probability_distribution_dict[state] = fractions.Fraction(
-                probability_distribution_dict[state],
+                count,
                 total
             )
 
@@ -50,7 +50,7 @@ class ProbabilityDistribution:
             cls,
             events_list: List[Hashable],
     ) -> "ProbabilityDistribution":
-        return cls(collections.Counter(events_list))
+        return cls.from_events_counter(collections.Counter(events_list))
 
 
 class ProbabilityNotEqualOne(ValueError):

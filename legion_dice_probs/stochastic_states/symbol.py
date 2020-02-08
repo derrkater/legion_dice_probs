@@ -8,6 +8,9 @@ class Symbol(st_state.StochasticState):
     def __hash__(self):
         return hash(type(self).__name__)
 
+    def __repr__(self):
+        return type(self).__name__
+
 
 class Blank(Symbol):
     pass
