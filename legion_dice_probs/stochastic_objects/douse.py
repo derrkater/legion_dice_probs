@@ -11,16 +11,17 @@ from prob_dist_api import stochastic_state as st_state
 class Douse(st_object.StochasticObject, abc.ABC):
     def __init__(
             self,
-            probability_distribution: Optional[pd.ProbabilityDistribution] = None,
+            # probability_distribution: Optional[pd.ProbabilityDistribution] = None,
     ):
         super().__init__(
-            probability_distribution or self.get_default_probability_distribution()
+            # probability_distribution or self.get_default_probability_distribution()
+            self.get_default_probability_distribution()
         )
 
     def __eq__(self, other):
         return (
-                type(self).__name__ == type(other).__name__ and
-                self.get_probability_distribution() == other.get_probability_distribution()
+                type(self).__name__ == type(other).__name__
+                # self.get_probability_distribution() == other.get_probability_distribution()
         )
 
     def __hash__(self):
@@ -59,11 +60,11 @@ class RolledDouse(st_state.StochasticState):
         self.symbol: sym.Symbol = symbol
 
     def __eq__(self, other):
-        return True
-        # return (
-        #         self.symbol == other.symbol and
-        #         self.douse == other.douse
-        # )
+        # return True
+        return (
+                self.symbol == other.symbol and
+                self.douse == other.douse
+        )
 
     def __hash__(self):
         return hash(self.symbol) + hash(type(self.douse).__name__)

@@ -46,14 +46,14 @@ def test_douse__should_implement_equal():
     assert Douse1() == Douse1()
     assert Douse1() != Douse2()
 
-    alt_prob_dist_1 = pd.ProbabilityDistribution.from_events_list(
-        [
-            Sym1(),
-            Sym2(),
-        ]
-    )
-
-    assert Douse1(alt_prob_dist_1) != Douse1()
+    # alt_prob_dist_1 = pd.ProbabilityDistribution.from_events_list(
+    #     [
+    #         Sym1(),
+    #         Sym2(),
+    #     ]
+    # )
+    #
+    # assert Douse1(alt_prob_dist_1) != Douse1()
 
 
 def test_douse__should_implement_hash():
@@ -67,19 +67,19 @@ def test_douse__should_implement_hash():
         )
     ) == 2
 
-    alt_prob_dist_1 = pd.ProbabilityDistribution.from_events_list(
-        [
-            Sym1(),
-            Sym2(),
-        ]
-    )
-
-    assert len(
-        collections.Counter(
-            [
-                Douse1(),
-                Douse1(alt_prob_dist_1),
-                Douse2(),
-            ]
-        )
-    ) == 3
+    # alt_prob_dist_1 = pd.ProbabilityDistribution.from_events_list(
+    #     [
+    #         Sym1(),
+    #         Sym2(),
+    #     ]
+    # )
+    #
+    # assert len(
+    #     collections.Counter(
+    #         [
+    #             Douse1(),
+    #             Douse1(alt_prob_dist_1),
+    #             Douse2(),
+    #         ]
+    #     )
+    # ) == 3
