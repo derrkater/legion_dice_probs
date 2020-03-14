@@ -65,6 +65,34 @@ class DicePool(st_object.StochasticObject):
     def add_douse(self, douse: dse.Douse) -> None:
         self.dice_list.append(douse)
 
+    @classmethod
+    def aggregate_dice(
+            cls,
+            dice_obj_1: Union[dse.Douse, "DicePool"],
+            dice_obj_2: Union[dse.Douse, "DicePool"],
+    ) -> "DicePool":
+        if isinstance(dice_obj_1, dse.Douse) and isinstance(dice_obj_2, dse.Douse):
+            return cls.from_dice_list(
+                [
+                    dice_obj_1,
+                    dice_obj_2
+                ]
+            )
+        if isinstance(dice_obj_1, cls) and isinstance(dice_obj_2, cls):
+            return cls(
+                probability_distribution=pd_utils.aggregate_probability_distributions(
+                    pd_1=dice_obj_1.get_probability_distribution(),
+                    pd_2=dice_obj_2.get_probability_distribution(),
+                    aggregate_function=NotImplemented
+                ),
+                dice_list=dice_obj_1.dice_list + dice_obj_2.dice_list,
+            )
+        if isinstance(dice_obj_1, cls) and isinstance(dice_obj_2, dse.Douse):
+            raise NotImplementedError
+        if isinstance(dice_obj_2, cls) and isinstance(dice_obj_1, dse.Douse):
+            raise NotImplementedError
+        raise ValueError
+
 
 class RolledDicePool(st_state.StochasticState):
     def __init__(
@@ -108,22 +136,22 @@ class RolledDicePool(st_state.StochasticState):
             rolled_dice_obj_2: Union[dse.RolledDouse, "RolledDicePool"],
     ) -> "RolledDicePool":
         if isinstance(rolled_dice_obj_1, dse.RolledDouse) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
-            return RolledDicePool.from_rolled_dice_list(
+            return cls.from_rolled_dice_list(
                 [
                     rolled_dice_obj_1,
                     rolled_dice_obj_2,
                 ]
             )
-        if isinstance(rolled_dice_obj_1, RolledDicePool) and isinstance(rolled_dice_obj_2, RolledDicePool):
-            return RolledDicePool.from_rolled_dice_list(
+        if isinstance(rolled_dice_obj_1, cls) and isinstance(rolled_dice_obj_2, cls):
+            return cls.from_rolled_dice_list(
                 list(rolled_dice_obj_1.rolled_dice_counter.elements()) +
                 list(rolled_dice_obj_2.rolled_dice_counter.elements())
             )
-        if isinstance(rolled_dice_obj_1, RolledDicePool) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
-            return RolledDicePool.from_rolled_dice_list(
+        if isinstance(rolled_dice_obj_1, cls) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
+            return cls.from_rolled_dice_list(
                 list(rolled_dice_obj_1.rolled_dice_counter.elements()) + [rolled_dice_obj_2]
             )
-        if isinstance(rolled_dice_obj_2, RolledDicePool) and isinstance(rolled_dice_obj_1, dse.RolledDouse):
+        if isinstance(rolled_dice_obj_2, cls) and isinstance(rolled_dice_obj_1, dse.RolledDouse):
             return cls.aggregate_rolled_dice(
                 rolled_dice_obj_2,
                 rolled_dice_obj_1
