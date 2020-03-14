@@ -1,5 +1,6 @@
 import collections
 import fractions
+import pprint
 from typing import Counter
 from typing import Dict
 from typing import Hashable
@@ -18,6 +19,9 @@ class ProbabilityDistribution:
             raise ProbabilityNotEqualOne
 
         self._dict: Dict[Hashable, fractions.Fraction] = probability_distribution_dict
+
+    def __repr__(self):
+        return pprint.pformat(self.as_dict)
 
     def __eq__(self, other):
         return self.as_dict == other.as_dict

@@ -1,4 +1,5 @@
 import collections
+import fractions
 from typing import List
 
 from legion_dice_probs.stochastic_objects import dice_pool as dce
@@ -237,13 +238,31 @@ def test_aggregate_rolled_dice__dice_pools():
     )
     assert len(rolled_dice.rolled_dice_counter) == 3
 
-# def test_dice_pool__should_be_created_from_list():
-#     dice_list = [
-#         Douse1(),
-#         Douse1(),
-#         Douse2(),
-#     ]
-#     dice_pool = dce.DicePool.from_dice_list(dice_list)
-#     assert dice_pool.dice_list == dice_list
-#     assert dice_pool.get_probability_distribution().as_dict[Douse1()] == 2./3
-#     assert dice_pool.as_dice_counter[Douse2()] == 1
+
+def test_dice_pool__should_be_created_from_list():
+    dice_list = [
+        Douse1(),
+        Douse1(),
+        Douse2(),
+    ]
+    dice_pool = dce.DicePool.from_dice_list(dice_list)
+    assert dice_pool.dice_list == dice_list
+    assert dice_pool.get_probability_distribution().as_dict[
+               dce.RolledDicePool.from_rolled_dice_list(
+                   rolled_dice_list=[
+                       RolledDouse1(
+                           douse=Douse1(),
+                           symbol=Sym1(),
+                       ),
+                       RolledDouse1(
+                           douse=Douse1(),
+                           symbol=Sym1(),
+                       ),
+                       RolledDouse2(
+                           douse=Douse2(),
+                           symbol=Sym1(),
+                       )
+                   ]
+               )
+           ] == fractions.Fraction(4, 27), 'Proper probability calculation'
+    assert dice_pool.as_dice_counter[Douse2()] == 1

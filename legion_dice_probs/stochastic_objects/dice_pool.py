@@ -1,13 +1,14 @@
 import collections
 import functools
-import operator
+import pprint
 from typing import Counter
 from typing import List
+from typing import Union
 
 import frozendict
 
-from legion_dice_probs.stochastic_states import symbol as sym
 from legion_dice_probs.stochastic_objects import douse as dse
+from legion_dice_probs.stochastic_states import symbol as sym
 from prob_dist_api import probability_distribution as pd
 from prob_dist_api import probability_distribution_utils as pd_utils
 from prob_dist_api import stochastic_object as st_object
@@ -44,7 +45,7 @@ class DicePool(st_object.StochasticObject):
             aggregated_dice_probability_distribution = functools.reduce(
                 functools.partial(
                     pd_utils.aggregate_probability_distributions,
-                    # aggregate_function=legion_st_object_utils.aggregate_rolled_douse_into_rolled_dice_pool
+                    aggregate_function=RolledDicePool.aggregate_rolled_dice
                 ),
                 dice_probability_distributions,
             )
@@ -72,11 +73,18 @@ class RolledDicePool(st_state.StochasticState):
     ):
         self.rolled_dice_counter: Counter[dse.RolledDouse] = rolled_dice_counter
 
+    def __repr__(self):
+        return pprint.pformat(self.rolled_dice_counter)
+
     def __eq__(self, other):
-        pass
+        return self.rolled_dice_counter == other.rolled_dice_counter
 
     def __hash__(self):
-        pass
+        return hash(self.as_dice_frozendict)
+
+    @property
+    def as_dice_frozendict(self):
+        return frozendict.frozendict(self.rolled_dice_counter)
 
     @classmethod
     def from_rolled_dice_list(
@@ -92,3 +100,32 @@ class RolledDicePool(st_state.StochasticState):
                 rolled_douse.symbol: count for rolled_douse, count in self.rolled_dice_counter.items()
             }
         )
+
+    @classmethod
+    def aggregate_rolled_dice(
+            cls,
+            rolled_dice_obj_1: Union[dse.RolledDouse, "RolledDicePool"],
+            rolled_dice_obj_2: Union[dse.RolledDouse, "RolledDicePool"],
+    ) -> "RolledDicePool":
+        if isinstance(rolled_dice_obj_1, dse.RolledDouse) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
+            return RolledDicePool.from_rolled_dice_list(
+                [
+                    rolled_dice_obj_1,
+                    rolled_dice_obj_2,
+                ]
+            )
+        if isinstance(rolled_dice_obj_1, RolledDicePool) and isinstance(rolled_dice_obj_2, RolledDicePool):
+            return RolledDicePool.from_rolled_dice_list(
+                list(rolled_dice_obj_1.rolled_dice_counter.elements()) +
+                list(rolled_dice_obj_2.rolled_dice_counter.elements())
+            )
+        if isinstance(rolled_dice_obj_1, RolledDicePool) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
+            return RolledDicePool.from_rolled_dice_list(
+                list(rolled_dice_obj_1.rolled_dice_counter.elements()) + [rolled_dice_obj_2]
+            )
+        if isinstance(rolled_dice_obj_2, RolledDicePool) and isinstance(rolled_dice_obj_1, dse.RolledDouse):
+            return cls.aggregate_rolled_dice(
+                rolled_dice_obj_2,
+                rolled_dice_obj_1
+            )
+        raise ValueError

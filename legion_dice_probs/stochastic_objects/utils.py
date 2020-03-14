@@ -5,18 +5,6 @@ from legion_dice_probs.stochastic_objects import douse as dse
 from prob_dist_api import probability_distribution_utils as pd_utils
 
 
-def aggregate_rolled_douse_into_rolled_dice_pool(
-        rolled_douse_1: dse.RolledDouse,
-        rolled_douse_2: dse.RolledDouse,
-):
-    return dce.RolledDicePool.from_rolled_dice_list(
-        [
-            rolled_douse_1,
-            rolled_douse_2,
-        ]
-    )
-
-
 DiceObjType = Union[
     dse.Douse,
     dce.DicePool,
