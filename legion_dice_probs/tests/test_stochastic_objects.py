@@ -4,7 +4,6 @@ from typing import List
 
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
-from legion_dice_probs.stochastic_objects import utils as legion_st_objects_utils
 from legion_dice_probs.stochastic_states import symbol as sym
 
 
@@ -124,7 +123,7 @@ def test_rolled_douse__should_implement_hash():
 
 
 def test_aggregate_rolled_dice__2_dice_same():
-    rolled_dice = legion_st_objects_utils.aggregate_rolled_dice(
+    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
         RolledDouse1(
             douse=Douse1(),
             symbol=Sym1(),
@@ -138,7 +137,7 @@ def test_aggregate_rolled_dice__2_dice_same():
 
 
 def test_aggregate_rolled_dice__2_dice_different():
-    rolled_dice = legion_st_objects_utils.aggregate_rolled_dice(
+    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
         RolledDouse1(
             douse=Douse1(),
             symbol=Sym1(),
@@ -156,7 +155,7 @@ def test_aggregate_rolled_dice__dice_pool_and_same_douse():
         douse=Douse1(),
         symbol=Sym2(),
     )
-    rolled_dice = legion_st_objects_utils.aggregate_rolled_dice(
+    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
         dce.RolledDicePool(
             rolled_dice_counter=collections.Counter(
                 [
@@ -182,7 +181,7 @@ def test_aggregate_rolled_dice__dice_pool_and_new_douse():
         douse=Douse2(),
         symbol=Sym2(),
     )
-    rolled_dice = legion_st_objects_utils.aggregate_rolled_dice(
+    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
         dce.RolledDicePool(
             rolled_dice_counter=collections.Counter(
                 [
@@ -232,7 +231,7 @@ def test_aggregate_rolled_dice__dice_pools():
             ]
         )
     )
-    rolled_dice = legion_st_objects_utils.aggregate_rolled_dice(
+    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
         rolled_dice_pool_1,
         rolled_dice_pool_2,
     )
