@@ -35,8 +35,6 @@ class ConvertSurge(event.Event, ABC):
         syms.Symbols,
         dse.RolledDouse,
         dce.RolledDicePool,
-        # dse.Douse,
-        # dce.DicePool,
         pd.ProbabilityDistribution
     ]:
         if isinstance(object_, sym.Symbol):
@@ -68,10 +66,6 @@ class ConvertSurge(event.Event, ABC):
             return dce.RolledDicePool(
                 rolled_dice_counter=collections.Counter(rolled_dice_dict_after)
             )
-        # if isinstance(object_, dse.Douse):
-        #     raise NotImplementedError
-        # if isinstance(object_, dce.DicePool):
-        #     raise NotImplementedError
         if isinstance(object_, st_object.StochasticObject):
             prob_dist = object_.get_probability_distribution()
             prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
