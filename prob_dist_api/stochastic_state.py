@@ -1,10 +1,11 @@
 import abc
 import fractions
+from collections import Hashable
 
 from prob_dist_api import probability_distribution as pd
 
 
-class StochasticState(abc.ABC):
+class StochasticState(abc.ABC, Hashable):
     def get_probability_distribution(self) -> pd.ProbabilityDistribution:
         return pd.ProbabilityDistribution(
             {

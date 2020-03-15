@@ -121,14 +121,6 @@ class RolledDicePool(st_state.StochasticState):
     ):
         return cls(collections.Counter(rolled_dice_list))
 
-    @property
-    def get_symbols_counter(self) -> Counter[sym.Symbol]:
-        return collections.Counter(
-            mapping={
-                rolled_douse.symbol: count for rolled_douse, count in self.rolled_dice_counter.items()
-            }
-        )
-
     @classmethod
     def aggregate_rolled_dice(
             cls,
