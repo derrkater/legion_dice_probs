@@ -28,7 +28,7 @@ class RedAttackDouse(AttackDouse):
         return RolledRedAttackDouse
 
 
-class RolledRedAttackDouse(RedAttackDouse, dse.RolledDouse):
+class RolledRedAttackDouse(dse.RolledDouse, RedAttackDouse):
     pass
 
 
@@ -51,7 +51,7 @@ class BlackAttackDouse(AttackDouse):
         return RolledBlackAttackDouse
 
 
-class RolledBlackAttackDouse(BlackAttackDouse, dse.RolledDouse):
+class RolledBlackAttackDouse(dse.RolledDouse, BlackAttackDouse):
     pass
 
 
@@ -74,5 +74,5 @@ class WhiteAttackDouse(AttackDouse):
         return RolledWhiteAttackDouse
 
 
-class RolledWhiteAttackDouse(WhiteAttackDouse, dse.RolledDouse):
+class RolledWhiteAttackDouse(dse.RolledDouse, WhiteAttackDouse):
     pass
