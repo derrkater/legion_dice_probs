@@ -9,6 +9,8 @@ from typing import List
 import frozendict
 
 
+# todo: implement get_n_best
+# todo: implement float/percentage output.
 class ProbabilityDistribution:
 
     def __init__(

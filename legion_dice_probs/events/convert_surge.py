@@ -15,7 +15,9 @@ from prob_dist_api import stochastic_object as st_object
 from prob_dist_api import stochastic_state as st_state
 
 
-# todo Symbols and RolledDicePool cases are very similar as they both are wrappers on counter objects. Refactor?
+# todo: Symbols and RolledDicePool cases are very similar as they both are wrappers on counter objects. Refactor?
+# todo: Implement n-symbols conversion for critical and surge tokens purposes
+# todo: Generalize to symbol conversion of blocking mechanics (hit -> blank) and ram (any -> crit).
 class ConvertSurge(event.Event, ABC):
     @classmethod
     @abstractmethod

@@ -1,4 +1,5 @@
 import collections
+import pprint
 from typing import Counter
 from typing import List
 
@@ -27,6 +28,9 @@ class Symbols(st_state.StochasticState):
     @property
     def as_frozendict(self) -> frozendict.frozendict:
         return frozendict.frozendict(self.symbols_counter)
+
+    def __repr__(self):
+        return pprint.pformat(self.symbols_counter)
 
     def __eq__(self, other):
         return self.symbols_counter == other.symbols_counter
