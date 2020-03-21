@@ -23,14 +23,6 @@ class RedAttackDouse(AttackDouse):
             sym.Blank(),
         ]
 
-    @staticmethod
-    def get_rolled_douse_cls() -> type(dse.RolledDouse):
-        return RolledRedAttackDouse
-
-
-class RolledRedAttackDouse(dse.RolledDouse, RedAttackDouse):
-    pass
-
 
 class BlackAttackDouse(AttackDouse):
 
@@ -46,14 +38,6 @@ class BlackAttackDouse(AttackDouse):
             sym.Blank(),
         ]
 
-    @staticmethod
-    def get_rolled_douse_cls() -> type(dse.RolledDouse):
-        return RolledBlackAttackDouse
-
-
-class RolledBlackAttackDouse(dse.RolledDouse, BlackAttackDouse):
-    pass
-
 
 class WhiteAttackDouse(AttackDouse):
 
@@ -68,11 +52,3 @@ class WhiteAttackDouse(AttackDouse):
             sym.Blank(),
             sym.Blank(),
         ]
-
-    @staticmethod
-    def get_rolled_douse_cls() -> type(dse.RolledDouse):
-        return RolledWhiteAttackDouse
-
-
-class RolledWhiteAttackDouse(dse.RolledDouse, WhiteAttackDouse):
-    pass

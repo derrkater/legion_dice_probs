@@ -1,8 +1,9 @@
 import collections
 import fractions
 
+from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
-from legion_dice_probs.tests.stubs import Douse1, Douse2, Sym1, Sym2, RolledDouse1, RolledDouse2
+from legion_dice_probs.tests.stubs import Douse1, Douse2, Sym1, Sym2
 
 
 def test_douse__should_implement_equal():
@@ -23,27 +24,27 @@ def test_douse__should_implement_hash():
 
 
 def test_rolled_douse__should_implement_equal():
-    rolled_douse_1_sym_1 = RolledDouse1(
+    rolled_douse_1_sym_1 = dse.RolledDouse(
         douse=Douse1(),
         symbol=Sym1(),
     )
-    rolled_douse_1_sym_2 = RolledDouse1(
+    rolled_douse_1_sym_2 = dse.RolledDouse(
         douse=Douse1(),
         symbol=Sym2(),
     )
-    rolled_douse_2_sym_1 = RolledDouse2(
+    rolled_douse_2_sym_1 = dse.RolledDouse(
         douse=Douse2(),
         symbol=Sym1(),
     )
-    rolled_douse_2_sym_2 = RolledDouse2(
+    rolled_douse_2_sym_2 = dse.RolledDouse(
         douse=Douse2(),
         symbol=Sym2(),
     )
-    assert rolled_douse_1_sym_1 == RolledDouse1(
+    assert rolled_douse_1_sym_1 == dse.RolledDouse(
         douse=Douse1(),
         symbol=Sym1(),
     )
-    assert rolled_douse_2_sym_2 == RolledDouse2(
+    assert rolled_douse_2_sym_2 == dse.RolledDouse(
         douse=Douse2(),
         symbol=Sym2(),
     )
@@ -55,19 +56,19 @@ def test_rolled_douse__should_implement_hash():
     assert len(
         collections.Counter(
             [
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse1(),
                     symbol=Sym1(),
                 ),
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse1(),
                     symbol=Sym1(),
                 ),
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse1(),
                     symbol=Sym2(),
                 ),
-                RolledDouse2(
+                dse.RolledDouse(
                     douse=Douse2(),
                     symbol=Sym1(),
                 ),
@@ -78,11 +79,11 @@ def test_rolled_douse__should_implement_hash():
 
 def test_aggregate_rolled_dice__2_dice_same():
     rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        RolledDouse1(
+        dse.RolledDouse(
             douse=Douse1(),
             symbol=Sym1(),
         ),
-        RolledDouse1(
+        dse.RolledDouse(
             douse=Douse1(),
             symbol=Sym1(),
         ),
@@ -92,11 +93,11 @@ def test_aggregate_rolled_dice__2_dice_same():
 
 def test_aggregate_rolled_dice__2_dice_different():
     rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        RolledDouse1(
+        dse.RolledDouse(
             douse=Douse1(),
             symbol=Sym1(),
         ),
-        RolledDouse1(
+        dse.RolledDouse(
             douse=Douse1(),
             symbol=Sym2(),
         ),
@@ -105,7 +106,7 @@ def test_aggregate_rolled_dice__2_dice_different():
 
 
 def test_aggregate_rolled_dice__dice_pool_and_same_douse():
-    appended_douse = RolledDouse1(
+    appended_douse = dse.RolledDouse(
         douse=Douse1(),
         symbol=Sym2(),
     )
@@ -113,11 +114,11 @@ def test_aggregate_rolled_dice__dice_pool_and_same_douse():
         dce.RolledDicePool(
             rolled_dice_counter=collections.Counter(
                 [
-                    RolledDouse1(
+                    dse.RolledDouse(
                         douse=Douse1(),
                         symbol=Sym1(),
                     ),
-                    RolledDouse1(
+                    dse.RolledDouse(
                         douse=Douse1(),
                         symbol=Sym2(),
                     ),
@@ -131,7 +132,7 @@ def test_aggregate_rolled_dice__dice_pool_and_same_douse():
 
 
 def test_aggregate_rolled_dice__dice_pool_and_new_douse():
-    appended_douse = RolledDouse1(
+    appended_douse = dse.RolledDouse(
         douse=Douse2(),
         symbol=Sym2(),
     )
@@ -139,11 +140,11 @@ def test_aggregate_rolled_dice__dice_pool_and_new_douse():
         dce.RolledDicePool(
             rolled_dice_counter=collections.Counter(
                 [
-                    RolledDouse1(
+                    dse.RolledDouse(
                         douse=Douse1(),
                         symbol=Sym1(),
                     ),
-                    RolledDouse1(
+                    dse.RolledDouse(
                         douse=Douse1(),
                         symbol=Sym2(),
                     ),
@@ -160,11 +161,11 @@ def test_aggregate_rolled_dice__dice_pools():
     rolled_dice_pool_1 = dce.RolledDicePool(
         rolled_dice_counter=collections.Counter(
             [
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse1(),
                     symbol=Sym1(),
                 ),
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse1(),
                     symbol=Sym2(),
                 ),
@@ -174,11 +175,11 @@ def test_aggregate_rolled_dice__dice_pools():
     rolled_dice_pool_2 = dce.RolledDicePool(
         rolled_dice_counter=collections.Counter(
             [
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse2(),
                     symbol=Sym1(),
                 ),
-                RolledDouse1(
+                dse.RolledDouse(
                     douse=Douse1(),
                     symbol=Sym2(),
                 ),
@@ -203,15 +204,15 @@ def test_dice_pool__should_be_created_from_list():
     assert dice_pool.get_probability_distribution().as_dict[
                dce.RolledDicePool.from_rolled_dice_list(
                    rolled_dice_list=[
-                       RolledDouse1(
+                       dse.RolledDouse(
                            douse=Douse1(),
                            symbol=Sym1(),
                        ),
-                       RolledDouse1(
+                       dse.RolledDouse(
                            douse=Douse1(),
                            symbol=Sym1(),
                        ),
-                       RolledDouse2(
+                       dse.RolledDouse(
                            douse=Douse2(),
                            symbol=Sym1(),
                        )

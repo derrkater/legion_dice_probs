@@ -2,8 +2,9 @@ import fractions
 
 from legion_dice_probs.events.count_symbols import CountSymbols
 from legion_dice_probs.stochastic_objects import dice_pool as dce
+from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbols as syms
-from legion_dice_probs.tests.stubs import Douse1, Douse2, Sym1, Sym2, RolledDouse1, RolledDouse2
+from legion_dice_probs.tests.stubs import Douse1, Douse2, Sym1, Sym2
 
 
 def test_count_single_symbol():
@@ -23,7 +24,7 @@ def test_count_symbols():
 
 
 def test_count_single_rolled_douse():
-    rolled_douse = RolledDouse1(
+    rolled_douse = dse.RolledDouse(
         douse=Douse1(),
         symbol=Sym1(),
     )
@@ -33,15 +34,15 @@ def test_count_single_rolled_douse():
 def test_count_rolled_dice():
     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
         [
-            RolledDouse1(
+            dse.RolledDouse(
                 douse=Douse1(),
                 symbol=Sym1(),
             ),
-            RolledDouse1(
+            dse.RolledDouse(
                 douse=Douse1(),
                 symbol=Sym2(),
             ),
-            RolledDouse2(
+            dse.RolledDouse(
                 douse=Douse2(),
                 symbol=Sym1(),
             )

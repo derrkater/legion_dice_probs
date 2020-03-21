@@ -21,14 +21,6 @@ class Douse1(dse.Douse):
             Sym2(),
         ]
 
-    @staticmethod
-    def get_rolled_douse_cls() -> type(dse.RolledDouse):
-        return RolledDouse1
-
-
-class RolledDouse1(dse.RolledDouse):
-    pass
-
 
 class Douse2(dse.Douse):
 
@@ -38,11 +30,3 @@ class Douse2(dse.Douse):
             Sym2(),
             Sym2(),
         ]
-
-    @staticmethod
-    def get_rolled_douse_cls() -> type(dse.RolledDouse):
-        return RolledDouse2
-
-
-class RolledDouse2(dse.RolledDouse):
-    pass

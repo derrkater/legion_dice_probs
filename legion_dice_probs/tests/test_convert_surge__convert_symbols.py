@@ -97,15 +97,15 @@ def test_convert_surge__on_rolled_douse__no_surge__wrong_conversion():
 def test_convert_surge__on_rolled_dice_pool():
     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
         [
-            att_dse.RolledBlackAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.BlackAttackDouse(),
                 symbol=sym.Surge(),
             ),
-            att_dse.RolledRedAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
                 symbol=sym.Hit(),
             ),
-            att_dse.RolledWhiteAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.WhiteAttackDouse(),
                 symbol=sym.Crit(),
             ),
@@ -113,15 +113,15 @@ def test_convert_surge__on_rolled_dice_pool():
     )
     rolled_dice_pool_target = dce.RolledDicePool.from_rolled_dice_list(
         [
-            att_dse.RolledRedAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
                 symbol=sym.Hit(),
             ),
-            att_dse.RolledBlackAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.BlackAttackDouse(),
                 symbol=sym.Crit(),
             ),
-            att_dse.RolledWhiteAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.WhiteAttackDouse(),
                 symbol=sym.Crit(),
             ),
@@ -135,11 +135,11 @@ def test_convert_surge__on_rolled_dice_pool():
 def test_convert_surge__on_rolled_dice_pool__no_surge():
     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
         [
-            att_dse.RolledBlackAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.BlackAttackDouse(),
                 symbol=sym.Blank(),
             ),
-            att_dse.RolledRedAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
                 symbol=sym.Hit(),
             ),
@@ -154,7 +154,7 @@ def test_convert_surge__on_douse():
     assert conv_syms.ConvertSymbols(
         conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(douse).as_dict[
-               att_dse.RolledWhiteAttackDouse(
+               dse.RolledDouse(
                    douse=douse,
                    symbol=sym.Crit()
                )
@@ -162,7 +162,7 @@ def test_convert_surge__on_douse():
     assert conv_syms.ConvertSymbols(
         conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(douse).as_dict[
-               att_dse.RolledWhiteAttackDouse(
+               dse.RolledDouse(
                    douse=douse,
                    symbol=sym.Surge()
                )
@@ -179,15 +179,15 @@ def test_convert_surge__on_dice_pool():
     )
     result_all_surge = dce.RolledDicePool.from_rolled_dice_list(
         [
-            att_dse.RolledWhiteAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.WhiteAttackDouse(),
                 symbol=sym.Surge()
             ),
-            att_dse.RolledBlackAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.BlackAttackDouse(),
                 symbol=sym.Surge()
             ),
-            att_dse.RolledRedAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
                 symbol=sym.Surge()
             ),
@@ -199,15 +199,15 @@ def test_convert_surge__on_dice_pool():
     ), "No conversion sanity check."
     result_all_hit = dce.RolledDicePool.from_rolled_dice_list(
         [
-            att_dse.RolledWhiteAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.WhiteAttackDouse(),
                 symbol=sym.Hit()
             ),
-            att_dse.RolledBlackAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.BlackAttackDouse(),
                 symbol=sym.Hit()
             ),
-            att_dse.RolledRedAttackDouse(
+            dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
                 symbol=sym.Hit()
             ),

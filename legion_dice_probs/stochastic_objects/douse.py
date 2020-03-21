@@ -23,7 +23,7 @@ class Douse(st_object.StochasticObject, abc.ABC):
     def get_default_probability_distribution(self) -> pd.ProbabilityDistribution:
         return pd.ProbabilityDistribution.from_events_list(
             [
-                self.get_rolled_douse_cls()(
+                RolledDouse(
                     self,
                     side,
                 ) for side in self.get_sides()
@@ -32,11 +32,6 @@ class Douse(st_object.StochasticObject, abc.ABC):
 
     @abc.abstractmethod
     def get_sides(self) -> List[sym.Symbol]:
-        raise NotImplementedError
-
-    @staticmethod
-    @abc.abstractmethod
-    def get_rolled_douse_cls() -> "RolledDouse".__class__:
         raise NotImplementedError
 
 
