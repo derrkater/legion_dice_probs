@@ -2,6 +2,7 @@ import fractions
 
 import pytest
 
+import legion_dice_probs.events.tools.conversion_policy
 from legion_dice_probs.events import convert_symbols as conv_syms
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
@@ -13,14 +14,14 @@ from legion_dice_probs.stochastic_states import symbols as syms
 def test_convert_surge__on_symbol__surge():
     symbol = sym.Surge()
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToBlock(),
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToBlock(),
     ).on(symbol) == sym.Block()
 
 
 def test_convert_surge__on_symbol__no_surge():
     symbol = sym.Hit()
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(symbol) == symbol
 
 
@@ -40,7 +41,7 @@ def test_convert_surge__on_symbols():
         ]
     )
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(symbols) == symbols_target
 
 
@@ -53,7 +54,7 @@ def test_convert_surge__on_symbols__no_surge():
         ]
     )
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(symbols) == symbols
 
 
@@ -63,7 +64,7 @@ def test_convert_surge__on_rolled_douse__surge():
         symbol=sym.Surge(),
     )
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(rolled_douse).symbol == sym.Crit()
 
 
@@ -73,7 +74,7 @@ def test_convert_surge__on_rolled_douse__no_surge():
         symbol=sym.Crit(),
     )
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToHit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToHit()
     ).on(rolled_douse) == rolled_douse
 
 
@@ -84,7 +85,7 @@ def test_convert_surge__on_rolled_douse__surge__wrong_conversion():
     )
     with pytest.raises(ValueError):
         conv_syms.ConvertSymbols(
-            conversion_policy=conv_syms.ConversionPolicyAttackSurgeToBlock(),
+            conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToBlock(),
         ).on(rolled_douse)
 
 
@@ -127,7 +128,7 @@ def test_convert_surge__on_rolled_dice_pool():
         ]
     )
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(rolled_dice_pool) == rolled_dice_pool_target
 
 
@@ -145,13 +146,13 @@ def test_convert_surge__on_rolled_dice_pool__no_surge():
         ]
     )
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(rolled_dice_pool) == rolled_dice_pool
 
 def test_convert_surge__on_douse():
     douse = att_dse.WhiteAttackDouse()
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(douse).as_dict[
                att_dse.RolledWhiteAttackDouse(
                    douse=douse,
@@ -159,7 +160,7 @@ def test_convert_surge__on_douse():
                )
            ] == fractions.Fraction(2, 8)
     assert conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(douse).as_dict[
                att_dse.RolledWhiteAttackDouse(
                    douse=douse,
@@ -218,7 +219,7 @@ def test_convert_surge__on_dice_pool():
     ), "No conversion sanity check."
 
     dice_pool_converted_to_hit_prob_dist = conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToHit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToHit()
     ).on(dice_pool)
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_surge] == 0
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_hit] == fractions.Fraction(
@@ -227,7 +228,7 @@ def test_convert_surge__on_dice_pool():
     )
 
     dice_pool_converted_to_hit_prob_dist = conv_syms.ConvertSymbols(
-        conversion_policy=conv_syms.ConversionPolicyAttackSurgeToCrit()
+        conversion_policy=legion_dice_probs.events.tools.conversion_policy.ConversionPolicyAttackSurgeToCrit()
     ).on(dice_pool)
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_surge] == 0
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_hit] == fractions.Fraction(
