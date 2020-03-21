@@ -58,6 +58,12 @@ class ConversionPolicy(ABC):
             ) for convertible_symbol_cls in self.get_convertible_symbols()
         )
 
+    def index(
+            self,
+            symbol: sym.Symbol,
+    ):
+        return self.get_convertible_symbols().index(type(symbol))
+
 
 class ConversionPolicyAttack(ConversionPolicy, ABC):
     @classmethod
@@ -178,11 +184,10 @@ class ConvertSymbols(event.Event):
             symbols = object_.symbols_counter.elements()
 
             def get_symbol_conversion_priority(symbol: sym.Symbol):
-                convertible_symbols = self.conversion_policy.get_convertible_symbols()
-                if symbol not in convertible_symbols:
-                    return len(convertible_symbols)
+                if not self.conversion_policy.is_convertible(symbol):
+                    return len(self.conversion_policy.get_convertible_symbols())
                 else:
-                    return convertible_symbols.index(symbol)
+                    return self.conversion_policy.index(symbol)
 
             symbols_sorted = sorted(
                 symbols,
