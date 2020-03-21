@@ -141,6 +141,30 @@ class ConversionPolicyAttackSurgeToCrit(ConversionPolicyAttack):
         return sym.Surge,
 
 
+class ConversionPolicyAttackHitToBlank(ConversionPolicyAttack):
+    def __init__(
+            self,
+            conversion_target: sym.Symbol = sym.Blank(),
+    ):
+        super().__init__(conversion_target)
+
+    @classmethod
+    def get_convertible_symbols(cls):
+        return sym.Hit,
+
+
+class ConversionPolicyAttackCritAndHitToBlank(ConversionPolicyAttack):
+    def __init__(
+            self,
+            conversion_target: sym.Symbol = sym.Blank(),
+    ):
+        super().__init__(conversion_target)
+
+    @classmethod
+    def get_convertible_symbols(cls):
+        return sym.Crit, sym.Hit
+
+
 class ConversionPolicyDefend(ConversionPolicy, ABC):
     @classmethod
     def get_convertible_dice(cls):
