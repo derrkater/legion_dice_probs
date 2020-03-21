@@ -76,6 +76,6 @@ from legion_dice_probs.stochastic_states import symbols as syms
 def test_convert_symbols__conversion_order__symbols(n_converts, symbols, symbols_target):
     conversion = conv_syms.ConvertSymbols(
         conversion_policy=conv_syms.ConversionPolicyAttackAnyToCrit(),
-        n_converts=n_converts,
+        conversion_limit=n_converts,
     )
     assert conversion.on(syms.Symbols.from_symbols_list(symbols)) == syms.Symbols.from_symbols_list(symbols_target)

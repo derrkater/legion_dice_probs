@@ -64,6 +64,15 @@ class ConversionPolicy(ABC):
     ):
         return self.get_convertible_symbols().index(type(symbol))
 
+    def get_symbol_conversion_priority(
+            self,
+            symbol: sym.Symbol,
+    ):
+        if not self.is_convertible(symbol):
+            return len(self.get_convertible_symbols())
+        else:
+            return self.index(symbol)
+
 
 class ConversionPolicyAttack(ConversionPolicy, ABC):
     @classmethod
@@ -152,17 +161,41 @@ class ConvertSymbols(event.Event):
     def __init__(
             self,
             conversion_policy: ConversionPolicy,
-            n_converts: int = None,
+            conversion_limit: int = None,
     ):
-        if n_converts is not None and n_converts < 1:
-            raise ValueError(f'Requested {n_converts} conversions.')
+        if conversion_limit is not None and conversion_limit < 1:
+            raise ValueError(f'Requested {conversion_limit} conversions.')
 
         self.conversion_policy = conversion_policy
-        self.n_converts = n_converts
+        self._conversion_limit = conversion_limit
+        self._n_converted = 0
 
     @property
     def conversion_target(self) -> sym.Symbol:
         return self.conversion_policy.conversion_target
+
+    @property
+    def conversion_limit(self):
+        return self._conversion_limit
+
+    @property
+    def n_converted(self):
+        return self._n_converted
+
+    @property
+    def can_convert(self):
+        return self.conversion_limit is None or self.n_converted < self.conversion_limit
+
+    def mark_conversion(self):
+        if not self.can_convert:
+            logging.warning(f'Marking conversion with {self}, while conversion limit of {self.conversion_limit}')
+        self._n_converted += 1
+
+    def copy(self) -> "ConvertSymbols":
+        return self.__class__(
+            conversion_policy=self.conversion_policy,
+            conversion_limit=self.conversion_limit,
+        )
 
     def on(
             self,
@@ -179,31 +212,19 @@ class ConvertSymbols(event.Event):
         pd.ProbabilityDistribution
     ]:
         if isinstance(object_, sym.Symbol):
-            return self.conversion_target if self.conversion_policy.is_convertible(object_) else object_
+            if self.conversion_policy.is_convertible(object_):
+                self.mark_conversion()
+                return self.conversion_target
+            else:
+                return object_
         if isinstance(object_, syms.Symbols):
-            symbols = object_.symbols_counter.elements()
-
-            def get_symbol_conversion_priority(symbol: sym.Symbol):
-                if not self.conversion_policy.is_convertible(symbol):
-                    return len(self.conversion_policy.get_convertible_symbols())
-                else:
-                    return self.conversion_policy.index(symbol)
-
             symbols_sorted = sorted(
-                symbols,
-                key=get_symbol_conversion_priority,
+                object_.symbols_counter.elements(),
+                key=self.conversion_policy.get_symbol_conversion_priority,
             )
-            n_converted = 0
             symbols_converted = []
             for symbol in symbols_sorted:
-                if self.n_converts is None or n_converted < self.n_converts:
-                    symbol_converted = self.on(symbol)
-
-                    if symbol_converted != symbol:
-                        n_converted += 1
-                else:
-                    symbol_converted = symbol
-
+                symbol_converted = self.on(symbol) if self.can_convert else symbol
                 symbols_converted.append(symbol_converted)
 
             return syms.Symbols.from_symbols_list(symbols_converted)
