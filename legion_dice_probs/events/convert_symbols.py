@@ -49,14 +49,22 @@ class ConversionPolicy(ABC):
 
     def is_convertible(
             self,
-            symbol: sym.Symbol,
+            object_: Union[sym.Symbol, dse.RolledDouse],
     ):
-        return any(
-            isinstance(
-                symbol,
-                convertible_symbol_cls,
-            ) for convertible_symbol_cls in self.get_convertible_symbols()
-        )
+        if isinstance(object_, sym.Symbol):
+            return any(
+                isinstance(
+                    object_,
+                    convertible_symbol_cls,
+                ) for convertible_symbol_cls in self.get_convertible_symbols()
+            )
+        if isinstance(object_, dse.RolledDouse):
+            return any(
+                (
+                        isinstance(object_, convertible_douse_cls) and
+                        self.is_convertible(object_.symbol)
+                ) for convertible_douse_cls in self.get_convertible_dice()
+            )
 
     def index(
             self,
@@ -83,7 +91,7 @@ class ConversionPolicy(ABC):
             self,
             douse: dse.RolledDouse,
     ):
-        if not self.is_convertible(douse.symbol):
+        if not self.is_convertible(douse):
             return len(self.get_convertible_symbols()), len(self.get_convertible_dice())
         else:
             return self.index(douse.symbol), self.douse_index(douse)
@@ -93,9 +101,9 @@ class ConversionPolicyAttack(ConversionPolicy, ABC):
     @classmethod
     def get_convertible_dice(cls):
         return (
-            att_dse.WhiteAttackDouse,
-            att_dse.BlackAttackDouse,
-            att_dse.RedAttackDouse,
+            att_dse.RolledWhiteAttackDouse,
+            att_dse.RolledBlackAttackDouse,
+            att_dse.RolledRedAttackDouse,
         )
 
 
