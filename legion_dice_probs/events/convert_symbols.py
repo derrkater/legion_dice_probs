@@ -64,6 +64,12 @@ class ConversionPolicy(ABC):
     ):
         return self.get_convertible_symbols().index(type(symbol))
 
+    def douse_index(
+            self,
+            douse: dse.RolledDouse,
+    ):
+        return self.get_convertible_dice().index(type(douse))
+
     def get_symbol_conversion_priority(
             self,
             symbol: sym.Symbol,
@@ -72,6 +78,15 @@ class ConversionPolicy(ABC):
             return len(self.get_convertible_symbols())
         else:
             return self.index(symbol)
+
+    def get_douse_conversion_priority(
+            self,
+            douse: dse.RolledDouse,
+    ):
+        if not self.is_convertible(douse.symbol):
+            return len(self.get_convertible_symbols()), len(self.get_convertible_dice())
+        else:
+            return self.index(douse.symbol), self.douse_index(douse)
 
 
 class ConversionPolicyAttack(ConversionPolicy, ABC):
@@ -241,13 +256,17 @@ class ConvertSymbols(event.Event):
                 symbol=symbol_after,
             )
         if isinstance(object_, dce.RolledDicePool):
-            rolled_dice_counter = object_.rolled_dice_counter
-            rolled_dice_dict_after = collections.defaultdict(lambda: 0)
-            for rolled_douse, count in rolled_dice_counter.items():
-                rolled_dice_dict_after[self.on(rolled_douse)] += count
-            return dce.RolledDicePool(
-                rolled_dice_counter=collections.Counter(rolled_dice_dict_after)
+            rolled_dice_sorted = sorted(
+                object_.rolled_dice_counter.elements(),
+                key=self.conversion_policy.get_douse_conversion_priority,
             )
+            rolled_dice_converted = []
+            for rolled_douse in rolled_dice_sorted:
+                symbol_converted = self.on(rolled_douse) if self.can_convert else rolled_douse
+                rolled_dice_converted.append(symbol_converted)
+
+            return dce.RolledDicePool.from_rolled_dice_list(rolled_dice_converted)
+
         if isinstance(object_, st_object.StochasticObject):
             prob_dist = object_.get_probability_distribution()
             prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))

@@ -88,58 +88,58 @@ def test_convert_surge__on_rolled_douse__no_surge__wrong_conversion():
     pass
 
 
-# def test_convert_surge__on_rolled_dice_pool():
-#     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
-#         [
-#             att_dse.RolledBlackAttackDouse(
-#                 douse=att_dse.BlackAttackDouse(),
-#                 symbol=sym.Surge(),
-#             ),
-#             att_dse.RolledRedAttackDouse(
-#                 douse=att_dse.RedAttackDouse(),
-#                 symbol=sym.Hit(),
-#             ),
-#             att_dse.RolledWhiteAttackDouse(
-#                 douse=att_dse.WhiteAttackDouse(),
-#                 symbol=sym.Crit(),
-#             ),
-#         ]
-#     )
-#     rolled_dice_pool_target = dce.RolledDicePool.from_rolled_dice_list(
-#         [
-#             att_dse.RolledRedAttackDouse(
-#                 douse=att_dse.RedAttackDouse(),
-#                 symbol=sym.Hit(),
-#             ),
-#             att_dse.RolledBlackAttackDouse(
-#                 douse=att_dse.BlackAttackDouse(),
-#                 symbol=sym.Crit(),
-#             ),
-#             att_dse.RolledWhiteAttackDouse(
-#                 douse=att_dse.WhiteAttackDouse(),
-#                 symbol=sym.Crit(),
-#             ),
-#         ]
-#     )
-#     assert conv_srge.ConvertSurgeCrit.on(rolled_dice_pool) == rolled_dice_pool_target
-#
-#
-# def test_convert_surge__on_rolled_dice_pool__no_surge():
-#     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
-#         [
-#             att_dse.RolledBlackAttackDouse(
-#                 douse=att_dse.BlackAttackDouse(),
-#                 symbol=sym.Blank(),
-#             ),
-#             att_dse.RolledRedAttackDouse(
-#                 douse=att_dse.RedAttackDouse(),
-#                 symbol=sym.Hit(),
-#             ),
-#         ]
-#     )
-#     assert conv_srge.ConvertSurgeCrit.on(rolled_dice_pool) == rolled_dice_pool
-#
-#
+def test_convert_surge__on_rolled_dice_pool():
+    rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
+        [
+            att_dse.RolledBlackAttackDouse(
+                douse=att_dse.BlackAttackDouse(),
+                symbol=sym.Surge(),
+            ),
+            att_dse.RolledRedAttackDouse(
+                douse=att_dse.RedAttackDouse(),
+                symbol=sym.Hit(),
+            ),
+            att_dse.RolledWhiteAttackDouse(
+                douse=att_dse.WhiteAttackDouse(),
+                symbol=sym.Crit(),
+            ),
+        ]
+    )
+    rolled_dice_pool_target = dce.RolledDicePool.from_rolled_dice_list(
+        [
+            att_dse.RolledRedAttackDouse(
+                douse=att_dse.RedAttackDouse(),
+                symbol=sym.Hit(),
+            ),
+            att_dse.RolledBlackAttackDouse(
+                douse=att_dse.BlackAttackDouse(),
+                symbol=sym.Crit(),
+            ),
+            att_dse.RolledWhiteAttackDouse(
+                douse=att_dse.WhiteAttackDouse(),
+                symbol=sym.Crit(),
+            ),
+        ]
+    )
+    assert conv_srge.ConvertSurgeCrit.on(rolled_dice_pool) == rolled_dice_pool_target
+
+
+def test_convert_surge__on_rolled_dice_pool__no_surge():
+    rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
+        [
+            att_dse.RolledBlackAttackDouse(
+                douse=att_dse.BlackAttackDouse(),
+                symbol=sym.Blank(),
+            ),
+            att_dse.RolledRedAttackDouse(
+                douse=att_dse.RedAttackDouse(),
+                symbol=sym.Hit(),
+            ),
+        ]
+    )
+    assert conv_srge.ConvertSurgeCrit.on(rolled_dice_pool) == rolled_dice_pool
+
+
 # def test_convert_surge__on_douse():
 #     douse = att_dse.WhiteAttackDouse()
 #     assert conv_srge.ConvertSurgeCrit.on(douse).as_dict[
