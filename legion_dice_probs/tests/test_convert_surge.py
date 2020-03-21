@@ -3,9 +3,9 @@ import fractions
 import pytest
 
 from legion_dice_probs.events import convert_surges as conv_srge
-from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
+from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
 from legion_dice_probs.stochastic_states import symbols as syms
 

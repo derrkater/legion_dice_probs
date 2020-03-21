@@ -18,12 +18,11 @@ import fractions
 import logging
 from typing import Union
 
-from legion_dice_probs.events.tools.conversion_policy import ConversionPolicy
+from legion_dice_probs.events.tools import conversion_policy as conv_pol
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
 from legion_dice_probs.stochastic_states import symbols as syms
-
 from prob_dist_api import event
 from prob_dist_api import probability_distribution as pd
 from prob_dist_api import stochastic_object as st_object
@@ -33,7 +32,7 @@ from prob_dist_api import stochastic_state as st_state
 class ConvertSymbols(event.Event):
     def __init__(
             self,
-            conversion_policy: ConversionPolicy,
+            conversion_policy: conv_pol.ConversionPolicy,
             conversion_limit: int = None,
     ):
         if conversion_limit is not None and conversion_limit < 1:

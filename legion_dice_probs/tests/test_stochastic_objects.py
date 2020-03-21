@@ -1,8 +1,8 @@
 import collections
 import fractions
 
-from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
+from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.tests.stubs import Douse1, Douse2, Sym1, Sym2
 
 
