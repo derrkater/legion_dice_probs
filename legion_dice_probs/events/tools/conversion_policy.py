@@ -34,11 +34,11 @@ class ConversionPolicy(ABC):
         if isinstance(object_, dse.RolledDouse):
             return any(
                 (
-                        isinstance(object_, convertible_douse_cls) and
+                        isinstance(object_.douse, convertible_douse_cls) and
                         self.is_convertible(object_.symbol)
                 ) for convertible_douse_cls in self.get_convertible_dice()
             )
-        raise TypeError
+        raise ValueError
 
     def index(
             self,
@@ -52,9 +52,9 @@ class ConversionPolicy(ABC):
     ):
         if isinstance(douse, dse.RolledDouse):
             return self.get_convertible_dice().index(type(douse.douse))
-        if isinstance(douse, dse.RolledDouse):
+        if isinstance(douse, dse.Douse):
             return self.get_convertible_dice().index(type(douse))
-        raise TypeError
+        raise ValueError
 
     def get_symbol_conversion_priority(
             self,
@@ -70,9 +70,10 @@ class ConversionPolicy(ABC):
             douse: dse.RolledDouse,
     ):
         if not self.is_convertible(douse):
-            return len(self.get_convertible_symbols()), len(self.get_convertible_dice())
+            ret = len(self.get_convertible_symbols()), len(self.get_convertible_dice())
         else:
-            return self.index(douse.symbol), self.rolled_douse_index(douse)
+            ret = self.index(douse.symbol), self.rolled_douse_index(douse)
+        return ret
 
 
 class ConversionPolicyAttack(ConversionPolicy, ABC):
