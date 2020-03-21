@@ -2,7 +2,7 @@ from legion_dice_probs.events import convert_symbols as conv_syms
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
 
 
-class ConvertSurgeHit(conv_syms.ConvertSymbols):
+class ConvertSurgesToHit(conv_syms.ConvertSymbols):
     def __init__(
             self,
             conversion_policy: conv_pol.ConversionPolicy = None,
@@ -14,7 +14,7 @@ class ConvertSurgeHit(conv_syms.ConvertSymbols):
         )
 
 
-class ConvertSurgeCrit(conv_syms.ConvertSymbols):
+class ConvertSurgesToCrit(conv_syms.ConvertSymbols):
     def __init__(
             self,
             conversion_policy: conv_pol.ConversionPolicy = None,
@@ -26,7 +26,7 @@ class ConvertSurgeCrit(conv_syms.ConvertSymbols):
         )
 
 
-class ConvertSurgeBlock(conv_syms.ConvertSymbols):
+class ConvertSurgesToBlock(conv_syms.ConvertSymbols):
     def __init__(
             self,
             conversion_policy: conv_pol.ConversionPolicy = None,

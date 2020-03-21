@@ -3,7 +3,7 @@ import fractions
 import pytest
 
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
-from legion_dice_probs.events import convert_surge as conv_srge
+from legion_dice_probs.events import convert_surges as conv_srge
 from legion_dice_probs.events import convert_symbols as conv_syms
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse

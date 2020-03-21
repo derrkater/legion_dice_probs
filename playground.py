@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from legion_dice_probs.events import convert_surge as conv
+from legion_dice_probs.events import convert_surges as conv
 from legion_dice_probs.events import count_symbols as count
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
