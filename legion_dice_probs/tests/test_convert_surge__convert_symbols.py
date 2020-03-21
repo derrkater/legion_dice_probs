@@ -58,36 +58,36 @@ def test_convert_surge__on_symbols__no_surge():
     ).on(symbols) == symbols
 
 
-# def test_convert_surge__on_rolled_douse__surge():
-#     rolled_douse = dse.RolledDouse(
-#         douse=att_dse.RedAttackDouse(),
-#         symbol=sym.Surge(),
-#     )
-#     assert conv_srge.ConvertSurgeCrit.on(rolled_douse).symbol == sym.Crit()
-#
-#
-# def test_convert_surge__on_rolled_douse__no_surge():
-#     rolled_douse = dse.RolledDouse(
-#         douse=att_dse.WhiteAttackDouse(),
-#         symbol=sym.Crit(),
-#     )
-#     assert conv_srge.ConvertSurgeHit.on(rolled_douse) == rolled_douse
-#
-#
-# def test_convert_surge__on_rolled_douse__surge__wrong_conversion():
-#     rolled_douse = dse.RolledDouse(
-#         douse=att_dse.BlackAttackDouse(),
-#         symbol=sym.Surge(),
-#     )
-#     with pytest.raises(ValueError):
-#         conv_srge.ConvertSurgeBlock.on(rolled_douse)
-#
-#
-# def test_convert_surge__on_rolled_douse__no_surge__wrong_conversion():
-#     # todo: test warning check.
-#     pass
-#
-#
+def test_convert_surge__on_rolled_douse__surge():
+    rolled_douse = dse.RolledDouse(
+        douse=att_dse.RedAttackDouse(),
+        symbol=sym.Surge(),
+    )
+    assert conv_srge.ConvertSurgeCrit.on(rolled_douse).symbol == sym.Crit()
+
+
+def test_convert_surge__on_rolled_douse__no_surge():
+    rolled_douse = dse.RolledDouse(
+        douse=att_dse.WhiteAttackDouse(),
+        symbol=sym.Crit(),
+    )
+    assert conv_srge.ConvertSurgeHit.on(rolled_douse) == rolled_douse
+
+
+def test_convert_surge__on_rolled_douse__surge__wrong_conversion():
+    rolled_douse = dse.RolledDouse(
+        douse=att_dse.BlackAttackDouse(),
+        symbol=sym.Surge(),
+    )
+    with pytest.raises(ValueError):
+        conv_srge.ConvertSurgeBlock.on(rolled_douse)
+
+
+def test_convert_surge__on_rolled_douse__no_surge__wrong_conversion():
+    # todo: test warning check.
+    pass
+
+
 # def test_convert_surge__on_rolled_dice_pool():
 #     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
 #         [
