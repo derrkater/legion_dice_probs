@@ -1,6 +1,7 @@
 from typing import Optional
 
 from legion_dice_probs.events import convert_symbols as conv_syms
+from legion_dice_probs.events import count_symbols as count_syms
 from legion_dice_probs.events import roll as rll
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
 from legion_dice_probs.events.tools import roll_policy as rll_pol
@@ -116,3 +117,19 @@ def get_defence_reroll(k: int):
 
 
 uncanny_luck_3 = get_attack_reroll(3)
+
+remove_unconverted_surge_results_attack = conv_syms.ConvertSymbols(
+    conversion_policy=conv_pol.get_conversion_policy_attack(
+        convertible_symbols=(sym.Surge,),
+        conversion_target=sym.Blank(),
+    )
+)
+
+remove_unconverted_surge_results_defence = conv_syms.ConvertSymbols(
+    conversion_policy=conv_pol.get_conversion_policy_defence(
+        convertible_symbols=(sym.Surge,),
+        conversion_target=sym.Blank(),
+    )
+)
+
+count_symbols = count_syms.CountSymbols()
