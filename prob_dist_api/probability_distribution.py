@@ -10,7 +10,7 @@ import frozendict
 
 
 # todo: implement get_n_best
-# todo: implement float/percentage output.
+# todo: implement percentage output.
 class ProbabilityDistribution:
 
     def __init__(
@@ -23,7 +23,7 @@ class ProbabilityDistribution:
         self._dict: Dict[Hashable, fractions.Fraction] = probability_distribution_dict
 
     def __repr__(self):
-        return pprint.pformat(self.as_dict)
+        return pprint.pformat(self.as_dict_with_floats)
 
     def __eq__(self, other):
         return self.as_dict == other.as_dict
@@ -34,6 +34,12 @@ class ProbabilityDistribution:
     @property
     def as_dict(self) -> Dict[Hashable, fractions.Fraction]:
         return self._dict
+
+    @property
+    def as_dict_with_floats(self) -> Dict[Hashable, float]:
+        return {
+            key: float(val) for key, val in self.as_dict.items()
+        }
 
     @property
     def as_frozendict(self):
