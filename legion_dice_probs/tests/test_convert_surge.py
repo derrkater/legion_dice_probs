@@ -2,7 +2,7 @@ import fractions
 
 import pytest
 
-from legion_dice_probs.events import convert_surges as conv_srge
+from legion_dice_probs.events import actions
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
@@ -12,12 +12,12 @@ from legion_dice_probs.stochastic_states import symbols as syms
 
 def test_convert_surge__on_symbol__surge():
     symbol = sym.Surge()
-    assert conv_srge.ConvertSurgesToBlock().on(symbol) == sym.Block()
+    assert actions.convert_all_surges_to_block.on(symbol) == sym.Block()
 
 
 def test_convert_surge__on_symbol__no_surge():
     symbol = sym.Hit()
-    assert conv_srge.ConvertSurgesToCrit().on(symbol) == symbol
+    assert actions.convert_all_surges_to_crit.on(symbol) == symbol
 
 
 def test_convert_surge__on_symbols():
@@ -35,7 +35,7 @@ def test_convert_surge__on_symbols():
             sym.Blank(),
         ]
     )
-    assert conv_srge.ConvertSurgesToCrit().on(symbols) == symbols_target
+    assert actions.convert_all_surges_to_crit.on(symbols) == symbols_target
 
 
 def test_convert_surge__on_symbols__no_surge():
@@ -46,7 +46,7 @@ def test_convert_surge__on_symbols__no_surge():
             sym.Blank(),
         ]
     )
-    assert conv_srge.ConvertSurgesToCrit().on(symbols) == symbols
+    assert actions.convert_all_surges_to_crit.on(symbols) == symbols
 
 
 def test_convert_surge__on_rolled_douse__surge():
@@ -54,7 +54,7 @@ def test_convert_surge__on_rolled_douse__surge():
         douse=att_dse.RedAttackDouse(),
         symbol=sym.Surge(),
     )
-    assert conv_srge.ConvertSurgesToCrit().on(rolled_douse).symbol == sym.Crit()
+    assert actions.convert_all_surges_to_crit.on(rolled_douse).symbol == sym.Crit()
 
 
 def test_convert_surge__on_rolled_douse__no_surge():
@@ -62,7 +62,7 @@ def test_convert_surge__on_rolled_douse__no_surge():
         douse=att_dse.WhiteAttackDouse(),
         symbol=sym.Crit(),
     )
-    assert conv_srge.ConvertSurgesToHit().on(rolled_douse) == rolled_douse
+    assert actions.convert_all_surges_to_hit.on(rolled_douse) == rolled_douse
 
 
 def test_convert_surge__on_rolled_douse__surge__wrong_conversion():
@@ -71,7 +71,7 @@ def test_convert_surge__on_rolled_douse__surge__wrong_conversion():
         symbol=sym.Surge(),
     )
     with pytest.raises(ValueError):
-        conv_srge.ConvertSurgesToBlock().on(rolled_douse)
+        actions.convert_all_surges_to_block.on(rolled_douse)
 
 
 def test_convert_surge__on_rolled_douse__no_surge__wrong_conversion():
@@ -112,7 +112,7 @@ def test_convert_surge__on_rolled_dice_pool():
             ),
         ]
     )
-    assert conv_srge.ConvertSurgesToCrit().on(rolled_dice_pool) == rolled_dice_pool_target
+    assert actions.convert_all_surges_to_crit.on(rolled_dice_pool) == rolled_dice_pool_target
 
 
 def test_convert_surge__on_rolled_dice_pool__no_surge():
@@ -128,18 +128,18 @@ def test_convert_surge__on_rolled_dice_pool__no_surge():
             ),
         ]
     )
-    assert conv_srge.ConvertSurgesToCrit().on(rolled_dice_pool) == rolled_dice_pool
+    assert actions.convert_all_surges_to_crit.on(rolled_dice_pool) == rolled_dice_pool
 
 
 def test_convert_surge__on_douse():
     douse = att_dse.WhiteAttackDouse()
-    assert conv_srge.ConvertSurgesToCrit().on(douse).as_dict[
+    assert actions.convert_all_surges_to_crit.on(douse).as_dict[
                dse.RolledDouse(
                    douse=douse,
                    symbol=sym.Crit()
                )
            ] == fractions.Fraction(2, 8)
-    assert conv_srge.ConvertSurgesToCrit().on(douse).as_dict[
+    assert actions.convert_all_surges_to_crit.on(douse).as_dict[
                dse.RolledDouse(
                    douse=douse,
                    symbol=sym.Surge()
@@ -196,14 +196,14 @@ def test_convert_surge__on_dice_pool():
         denominator=8 ** 3,
     ), "No conversion sanity check."
 
-    dice_pool_converted_to_hit_prob_dist = conv_srge.ConvertSurgesToHit().on(dice_pool)
+    dice_pool_converted_to_hit_prob_dist = actions.convert_all_surges_to_hit.on(dice_pool)
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_surge] == 0
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_hit] == fractions.Fraction(
         numerator=2 * 4 * 6,
         denominator=8 ** 3,
     )
 
-    dice_pool_converted_to_hit_prob_dist = conv_srge.ConvertSurgesToCrit().on(dice_pool)
+    dice_pool_converted_to_hit_prob_dist = actions.convert_all_surges_to_crit.on(dice_pool)
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_surge] == 0
     assert dice_pool_converted_to_hit_prob_dist.as_dict[result_all_hit] == fractions.Fraction(
         numerator=1 * 3 * 5,
