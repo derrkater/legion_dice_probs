@@ -1,7 +1,9 @@
 from abc import ABC
+from typing import Tuple
 from typing import Union
 
-from legion_dice_probs.stochastic_objects import douse as dse, attack_douse as att_dse
+from legion_dice_probs.stochastic_objects import attack_douse as att_dse
+from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
 
 
@@ -181,3 +183,21 @@ class ConversionPolicyAttackSurgeToBlock(ConversionPolicyDefend):
     @classmethod
     def get_convertible_symbols(cls):
         return sym.Surge,
+
+
+def get_conversion_policy_attack(
+        convertible_symbols: Tuple[type(sym.Symbol)],
+        conversion_target: sym.Symbol,
+):
+    class ConversionPolicyImpl(ConversionPolicyAttack):
+        def __init__(
+                self,
+                conversion_target: sym.Symbol = conversion_target,
+        ):
+            super().__init__(conversion_target)
+
+        @classmethod
+        def get_convertible_symbols(cls):
+            return convertible_symbols
+
+    return ConversionPolicyImpl()
