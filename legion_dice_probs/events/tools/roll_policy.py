@@ -10,11 +10,6 @@ from legion_dice_probs.stochastic_states import symbol as sym
 
 
 class RollPolicy(ABC):
-    def __init__(
-            self,
-            dice_number: int = None,
-    ):
-        self.dice_number = dice_number
 
     @classmethod
     def get_rollable_symbols(cls) -> Tuple[Type[sym.Symbol]]:
@@ -132,3 +127,25 @@ class RollPolicyDefence(RollPolicy):
             sym.Blank,
             sym.Surge,
         )
+
+
+def get_roll_policy_attack(
+        rollable_symbols: Tuple[Type[sym.Symbol], ...],
+):
+    class ConversionPolicyImpl(RollPolicyAttack):
+        @classmethod
+        def get_rollable_symbols(cls):
+            return rollable_symbols
+
+    return ConversionPolicyImpl()
+
+
+def get_roll_policy_defence(
+        rollable_symbols: Tuple[Type[sym.Symbol], ...],
+):
+    class ConversionPolicyImpl(RollPolicyDefence):
+        @classmethod
+        def get_rollable_symbols(cls):
+            return rollable_symbols
+
+    return ConversionPolicyImpl()
