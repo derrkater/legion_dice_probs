@@ -56,6 +56,32 @@ class RollPolicy(ABC):
             )
         raise ValueError
 
+    def index(
+            self,
+            symbol: sym.Symbol,
+    ):
+        return self.get_rollable_symbols().index(type(symbol))
+
+    def rolled_douse_index(
+            self,
+            douse: Union[dse.RolledDouse, dse.Douse],
+    ):
+        if isinstance(douse, dse.RolledDouse):
+            return self.get_rollable_dice().index(type(douse.douse))
+        if isinstance(douse, dse.Douse):
+            return self.get_rollable_dice().index(type(douse))
+        raise ValueError
+
+    def get_douse_roll_priority(
+            self,
+            douse: dse.RolledDouse,
+    ):
+        if not self.is_rollable(douse):
+            ret = len(self.get_rollable_symbols()), len(self.get_rollable_dice())
+        else:
+            ret = self.index(douse.symbol), self.rolled_douse_index(douse)
+        return ret
+
 
 class RollPolicyAttack(RollPolicy):
     @classmethod

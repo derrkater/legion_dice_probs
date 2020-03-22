@@ -1,13 +1,15 @@
 import collections
 import fractions
+import functools
 import logging
 from typing import Union
 
 from legion_dice_probs.events.tools import roll_policy as roll_pol
-from legion_dice_probs.stochastic_objects import dice_pool as dce_pool
+from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
 from prob_dist_api import event as ev
 from prob_dist_api import probability_distribution as pd
+from prob_dist_api import probability_distribution_utils as pd_utils
 from prob_dist_api import stochastic_object as st_object
 
 
@@ -52,7 +54,7 @@ class Roll(ev.Event):
             self,
             object_: Union[
                 dse.RolledDouse,
-                dce_pool.RolledDicePool,
+                dce.RolledDicePool,
                 st_object.StochasticObject,
                 pd.ProbabilityDistribution,
             ]
@@ -66,8 +68,28 @@ class Roll(ev.Event):
             else:
                 return object_.get_probability_distribution()
 
-        if isinstance(object_, dce_pool.RolledDicePool):
-            raise NotImplementedError
+        if isinstance(object_, dce.RolledDicePool):
+            rolled_dice_sorted = sorted(
+                object_.rolled_dice_counter.elements(),
+                key=self.roll_policy.get_douse_roll_priority,
+            )
+            prob_dists_after = []
+            for rolled_douse in rolled_dice_sorted:
+                rerolled_prob_dist = self.on(rolled_douse) if self.can_roll else rolled_douse.get_probability_distribution()
+                prob_dists_after.append(rerolled_prob_dist)
+
+            # TODO: rethink if this logic should be implemented either as part of DicePool.from_dice_list or
+            #  RolledDicePool.aggregate_rolled_dice. Former would extend signature with RolledDouse and latter with
+            #  Douse
+            aggregated_dice_probability_distribution = functools.reduce(
+                functools.partial(
+                    pd_utils.aggregate_probability_distributions,
+                    aggregate_function=dce.RolledDicePool.aggregate_rolled_dice
+                ),
+                prob_dists_after,
+            )
+
+            return aggregated_dice_probability_distribution
 
         if isinstance(object_, st_object.StochasticObject):
             prob_dist = object_.get_probability_distribution()

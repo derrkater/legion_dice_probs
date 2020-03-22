@@ -81,21 +81,46 @@ def test_roll__douse():
            ] == blank_prob
 
 
-def test_roll__rolled_dice_pool():
+@pytest.mark.parametrize(
+    'symbols_before, symbols_after, prob',
+    (
+            (
+                    [sym.Blank(), sym.Blank(), sym.Blank()],
+                    [sym.Blank(), sym.Blank(), sym.Blank()],
+                    fractions.Fraction(1, 64),
+            ),
+            (
+                    [sym.Blank(), sym.Blank(), sym.Blank()],
+                    [sym.Blank(), sym.Hit(), sym.Crit()],
+                    fractions.Fraction(5, 64) * 2,
+            ),
+            (
+                    [sym.Blank(), sym.Blank(), sym.Blank()],
+                    [sym.Hit(), sym.Hit(), sym.Hit()],
+                    0,
+            ),
+            (
+                    [sym.Blank(), sym.Hit(), sym.Blank()],
+                    [sym.Hit(), sym.Hit(), sym.Hit()],
+                    fractions.Fraction(25, 64),
+            ),
+    )
+)
+def test_roll__rolled_dice_pool__aim__red_dice(symbols_before, symbols_after, prob):
     rolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
         [
             dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
-                symbol=sym.Blank(),
-            ),
+                symbol=symbol,
+            ) for symbol in symbols_before
+        ]
+    )
+    rerolled_dice_pool = dce.RolledDicePool.from_rolled_dice_list(
+        [
             dse.RolledDouse(
                 douse=att_dse.RedAttackDouse(),
-                symbol=sym.Blank(),
-            ),
-            dse.RolledDouse(
-                douse=att_dse.RedAttackDouse(),
-                symbol=sym.Blank(),
-            ),
+                symbol=symbol,
+            ) for symbol in symbols_after
         ]
     )
     aim = rll.Roll(
@@ -103,4 +128,4 @@ def test_roll__rolled_dice_pool():
         roll_limit=2,
     )
     reroll_prob_dist_dict = aim.copy().on(rolled_dice_pool).as_dict
-    assert reroll_prob_dist_dict[rolled_dice_pool] == fractions.Fraction(1, 64)
+    assert reroll_prob_dist_dict[rerolled_dice_pool] == prob
