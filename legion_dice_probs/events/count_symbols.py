@@ -44,4 +44,11 @@ class CountSymbols(event.Event):
 
             return pd.ProbabilityDistribution(prob_dist_after)
 
+        if isinstance(object_, pd.ProbabilityDistribution):
+            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
+            for state, prob in object_.as_dict.items():
+                prob_dist_after[cls.on(state)] += prob
+
+            return pd.ProbabilityDistribution(prob_dist_after)
+
         raise NotImplementedError(f'{type(object_)} is not supported.')
