@@ -1,5 +1,6 @@
 from abc import ABC
 from typing import Tuple
+from typing import Type
 from typing import Union
 
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
@@ -167,13 +168,13 @@ class ConversionPolicyAttackCritAndHitToBlank(ConversionPolicyAttack):
         return sym.Crit, sym.Hit
 
 
-class ConversionPolicyDefend(ConversionPolicy, ABC):
+class ConversionPolicyDefence(ConversionPolicy, ABC):
     @classmethod
     def get_convertible_dice(cls):
         return NotImplemented,
 
 
-class ConversionPolicyAttackSurgeToBlock(ConversionPolicyDefend):
+class ConversionPolicyAttackSurgeToBlock(ConversionPolicyDefence):
     def __init__(
             self,
             conversion_target: sym.Symbol = sym.Block(),
@@ -186,10 +187,28 @@ class ConversionPolicyAttackSurgeToBlock(ConversionPolicyDefend):
 
 
 def get_conversion_policy_attack(
-        convertible_symbols: Tuple[type(sym.Symbol)],
+        convertible_symbols: Tuple[Type[sym.Symbol], ...],
         conversion_target: sym.Symbol,
 ):
     class ConversionPolicyImpl(ConversionPolicyAttack):
+        def __init__(
+                self,
+                conversion_target: sym.Symbol = conversion_target,
+        ):
+            super().__init__(conversion_target)
+
+        @classmethod
+        def get_convertible_symbols(cls):
+            return convertible_symbols
+
+    return ConversionPolicyImpl()
+
+
+def get_conversion_policy_defence(
+        convertible_symbols: Tuple[Type[sym.Symbol], ...],
+        conversion_target: sym.Symbol,
+):
+    class ConversionPolicyImpl(ConversionPolicyDefence):
         def __init__(
                 self,
                 conversion_target: sym.Symbol = conversion_target,
