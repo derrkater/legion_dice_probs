@@ -74,6 +74,22 @@ ram_1 = get_ram(1)
 ram_2 = get_ram(2)
 
 
+def get_impact(k: int):
+    return conv_syms.ConvertSymbols(
+        conversion_policy=conv_pol.get_conversion_policy_attack(
+            convertible_symbols=(sym.Hit,),
+            conversion_target=sym.Crit(),
+        ),
+        conversion_limit=k,
+    )
+
+
+impact_1 = get_impact(1)
+impact_2 = get_impact(2)
+impact_3 = get_impact(3)
+impact_4 = get_impact(4)
+
+
 def block_hits(k: Optional[int]):
     return conv_syms.ConvertSymbols(
         conversion_policy=conv_pol.get_conversion_policy_attack(
@@ -90,6 +106,21 @@ cover_2 = block_hits(2)
 armour_1 = block_hits(1)
 armour_2 = block_hits(2)
 armour = block_hits(None)
+
+
+def get_pierce(k: int):
+    return conv_syms.ConvertSymbols(
+        conversion_policy=conv_pol.get_conversion_policy_defence(
+            convertible_symbols=(sym.Block,),
+            conversion_target=sym.Blank(),
+        ),
+        conversion_limit=k,
+    )
+
+
+pierce_1 = get_pierce(1)
+pierce_2 = get_pierce(2)
+pierce_3 = get_pierce(3)
 
 
 def get_attack_reroll(k: int):
@@ -133,3 +164,10 @@ remove_unconverted_surge_results_defence = conv_syms.ConvertSymbols(
 )
 
 count_symbols = count_syms.CountSymbols()
+
+convert_all_crits_to_hits_for_calculation = conv_syms.ConvertSymbols(
+    conversion_policy=conv_pol.get_conversion_policy_attack(
+        convertible_symbols=(sym.Crit,),
+        conversion_target=sym.Hit(),
+    )
+)
