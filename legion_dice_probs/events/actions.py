@@ -1,7 +1,9 @@
 from typing import Optional
 
 from legion_dice_probs.events import convert_symbols as conv_syms
+from legion_dice_probs.events import roll as rll
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
+from legion_dice_probs.events.tools import roll_policy as rll_pol
 from legion_dice_probs.stochastic_states import symbol as sym
 
 convert_all_surges_to_hit = conv_syms.ConvertSymbols(
@@ -87,3 +89,30 @@ cover_2 = block_hits(2)
 armour_1 = block_hits(1)
 armour_2 = block_hits(2)
 armour = block_hits(None)
+
+
+def get_attack_reroll(k: int):
+    return rll.Roll(
+        roll_policy=rll_pol.get_roll_policy_attack(
+            rollable_symbols=(sym.Blank, sym.Surge,),
+        ),
+        roll_limit=k,
+    )
+
+
+aim = get_attack_reroll(2)
+aim_precise_1 = get_attack_reroll(3)
+aim_precise_2 = get_attack_reroll(4)
+aim_precise_3 = get_attack_reroll(5)
+
+
+def get_defence_reroll(k: int):
+    return rll.Roll(
+        roll_policy=rll_pol.get_roll_policy_defence(
+            rollable_symbols=(sym.Blank, sym.Surge,),
+        ),
+        roll_limit=k,
+    )
+
+
+uncanny_luck_3 = get_attack_reroll(3)
