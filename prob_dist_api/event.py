@@ -18,3 +18,8 @@ class Event(abc.ABC):
             ],
     ) -> pd.ProbabilityDistribution:
         raise NotImplementedError
+
+    @abc.abstractmethod
+    @property
+    def is_used(self) -> bool:
+        raise NotImplementedError
