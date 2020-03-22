@@ -4,10 +4,9 @@ import pytest
 
 from legion_dice_probs.events import roll as rll
 from legion_dice_probs.events.tools import roll_policy as rll_pol
+from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
-from legion_dice_probs.stochastic_objects import attack_douse as att_dse
-from legion_dice_probs.stochastic_objects import defence_douse as def_dse
 from legion_dice_probs.stochastic_states import symbol as sym
 
 
