@@ -82,10 +82,7 @@ class Roll(ev.Event):
             #  RolledDicePool.aggregate_rolled_dice. Former would extend signature with RolledDouse and latter with
             #  Douse
             aggregated_dice_probability_distribution = functools.reduce(
-                functools.partial(
-                    pd_utils.aggregate_probability_distributions,
-                    aggregate_function=dce.RolledDicePool.aggregate_rolled_dice
-                ),
+                object_.aggregate_probability_distributions,
                 prob_dists_after,
             )
 

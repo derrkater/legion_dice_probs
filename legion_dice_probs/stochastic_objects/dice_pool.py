@@ -36,6 +36,7 @@ class DicePool(st_object.StochasticObject):
             dice_list: List[dse.Douse],
     ) -> "DicePool":
         if len(dice_list) == 1:
+            # TODO: this probably doesn't work right as it retuns pd on douse not rolled_dice_pool.
             return cls(
                 probability_distribution=dice_list[0].get_probability_distribution(),
                 dice_list=dice_list,
@@ -43,10 +44,7 @@ class DicePool(st_object.StochasticObject):
         else:
             dice_probability_distributions = [douse.get_probability_distribution() for douse in dice_list]
             aggregated_dice_probability_distribution = functools.reduce(
-                functools.partial(
-                    pd_utils.aggregate_probability_distributions,
-                    aggregate_function=RolledDicePool.aggregate_rolled_dice
-                ),
+                RolledDicePool.aggregate_probability_distributions,
                 dice_probability_distributions,
             )
             return cls(
@@ -120,6 +118,18 @@ class RolledDicePool(st_state.StochasticState):
             rolled_dice_list: List[dse.RolledDouse],
     ):
         return cls(collections.Counter(rolled_dice_list))
+
+    @classmethod
+    def aggregate_probability_distributions(
+            cls,
+            pd_1: pd.ProbabilityDistribution,
+            pd_2: pd.ProbabilityDistribution,
+    ):
+        return pd_utils.aggregate_probability_distributions(
+            pd_1=pd_1,
+            pd_2=pd_2,
+            aggregate_function=cls.aggregate_rolled_dice
+        )
 
     @classmethod
     def aggregate_rolled_dice(
