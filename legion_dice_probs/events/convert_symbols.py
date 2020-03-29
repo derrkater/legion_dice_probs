@@ -140,7 +140,3 @@ class ConvertSymbols(event.Event):
             return pd.ProbabilityDistribution(prob_dist_after)
 
         raise NotImplementedError(f'{type(object_)} is not supported.')
-
-    @property
-    def is_used(self) -> bool:
-        return self.n_converted != 0

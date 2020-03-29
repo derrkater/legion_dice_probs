@@ -109,7 +109,3 @@ class Roll(ev.Event):
             return pd.ProbabilityDistribution(prob_dist_after)
 
         raise NotImplementedError(f'{type(object_)} is not supported.')
-
-    @property
-    def is_used(self) -> bool:
-        return self.n_rolled != 0

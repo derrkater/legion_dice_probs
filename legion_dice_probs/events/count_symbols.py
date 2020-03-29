@@ -51,8 +51,4 @@ class CountSymbols(event.Event):
 
             return pd.ProbabilityDistribution(prob_dist_after)
 
-        raise ValueError(f'{type(object_)} is not supported.')
-
-    @property
-    def is_used(self) -> bool:
-        return False
+        raise NotImplementedError(f'{type(object_)} is not supported.')
