@@ -42,7 +42,7 @@ class DicePool(st_object.StochasticObject):
             )
         else:
             dice_probability_distributions = [douse.get_probability_distribution() for douse in dice_list]
-            aggregated_dice_probability_distribution = RolledDicePool.aggregate_probability_distributions(
+            aggregated_dice_probability_distribution = RolledDicePool.aggregate_dice_probability_distributions(
                 dice_probability_distributions
             )
             return cls(
@@ -118,7 +118,7 @@ class RolledDicePool(st_state.StochasticState):
         return cls(collections.Counter(rolled_dice_list))
 
     @classmethod
-    def aggregate_probability_distributions(
+    def aggregate_dice_probability_distributions(
             cls,
             probability_distributions: List[pd.ProbabilityDistribution],
     ):
