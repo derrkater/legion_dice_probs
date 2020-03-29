@@ -81,10 +81,7 @@ class Roll(ev.Event):
             # TODO: rethink if this logic should be implemented either as part of DicePool.from_dice_list or
             #  RolledDicePool.aggregate_rolled_dice. Former would extend signature with RolledDouse and latter with
             #  Douse
-            aggregated_dice_probability_distribution = functools.reduce(
-                object_.aggregate_probability_distributions,
-                prob_dists_after,
-            )
+            aggregated_dice_probability_distribution = object_.aggregate_probability_distributions(prob_dists_after)
 
             return aggregated_dice_probability_distribution
 

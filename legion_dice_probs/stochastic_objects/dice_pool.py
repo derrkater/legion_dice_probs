@@ -8,7 +8,6 @@ from typing import Union
 import frozendict
 
 from legion_dice_probs.stochastic_objects import douse as dse
-from legion_dice_probs.stochastic_states import symbol as sym
 from prob_dist_api import probability_distribution as pd
 from prob_dist_api import probability_distribution_utils as pd_utils
 from prob_dist_api import stochastic_object as st_object
@@ -43,9 +42,8 @@ class DicePool(st_object.StochasticObject):
             )
         else:
             dice_probability_distributions = [douse.get_probability_distribution() for douse in dice_list]
-            aggregated_dice_probability_distribution = functools.reduce(
-                RolledDicePool.aggregate_probability_distributions,
-                dice_probability_distributions,
+            aggregated_dice_probability_distribution = RolledDicePool.aggregate_probability_distributions(
+                dice_probability_distributions
             )
             return cls(
                 probability_distribution=aggregated_dice_probability_distribution,
@@ -122,13 +120,14 @@ class RolledDicePool(st_state.StochasticState):
     @classmethod
     def aggregate_probability_distributions(
             cls,
-            pd_1: pd.ProbabilityDistribution,
-            pd_2: pd.ProbabilityDistribution,
+            probability_distributions: List[pd.ProbabilityDistribution],
     ):
-        return pd_utils.aggregate_probability_distributions(
-            pd_1=pd_1,
-            pd_2=pd_2,
-            aggregate_function=cls.aggregate_rolled_dice
+        return functools.reduce(
+            functools.partial(
+                pd_utils.aggregate_probability_distributions,
+                aggregate_function=cls.aggregate_rolled_dice
+            ),
+            probability_distributions,
         )
 
     @classmethod
