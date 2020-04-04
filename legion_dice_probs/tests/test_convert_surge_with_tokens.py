@@ -1,3 +1,5 @@
+import pytest
+
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool_attack as dce_att
@@ -47,5 +49,60 @@ def test_convert_surge__on_rolled_dice_pool():
             conversion_target=sym.Crit(),
         ),
         conversion_limit=1,
+    )
+    assert action.on(rolled_dice_pool) == rolled_dice_pool_target
+
+
+@pytest.mark.parametrize(
+    'symbols, n_surge_tokens, symbols_target, n_surge_tokens_target',
+    (
+            (
+                    [sym.Surge(), sym.Surge(), sym.Surge(), sym.Surge()], 4,
+                    [sym.Hit(), sym.Hit(), sym.Hit(), sym.Hit()], 0,
+            ),
+            (
+                    [sym.Surge(), sym.Surge(), sym.Surge(), sym.Surge()], 3,
+                    [sym.Hit(), sym.Surge(), sym.Hit(), sym.Hit()], 0,
+            ),
+            (
+                    [sym.Surge(), sym.Surge(), sym.Hit(), sym.Hit()], 3,
+                    [sym.Hit(), sym.Hit(), sym.Hit(), sym.Hit()], 1,
+            ),
+            (
+                    [sym.Surge(), sym.Surge(), sym.Hit(), sym.Hit()], 1,
+                    [sym.Hit(), sym.Hit(), sym.Surge(), sym.Hit()], 0,
+            ),
+    )
+)
+def test_convert_surge__on_rolled_dice_pool_attack__to_hit__single_dice_type(
+        symbols,
+        n_surge_tokens,
+        symbols_target,
+        n_surge_tokens_target,
+):
+    rolled_dice_pool = dce_att.RolledDicePoolAttack.from_rolled_dice_list(
+        [
+            dse.RolledDouse(
+                douse=att_dse.BlackAttackDouse(),
+                symbol=symbol,
+            ) for symbol in symbols
+        ],
+        n_surge_tokens=n_surge_tokens,
+    )
+    rolled_dice_pool_target = dce_att.RolledDicePoolAttack.from_rolled_dice_list(
+        [
+            dse.RolledDouse(
+                douse=att_dse.BlackAttackDouse(),
+                symbol=symbol,
+            ) for symbol in symbols_target
+        ],
+        n_surge_tokens=n_surge_tokens_target,
+    )
+    action = conv_srge_wtok.ConvertSurgeWithTokens(
+        conversion_policy=conv_pol.get_conversion_policy_attack(
+            convertible_symbols=(sym.Surge,),
+            conversion_target=sym.Hit(),
+        ),
+        conversion_limit=n_surge_tokens,
     )
     assert action.on(rolled_dice_pool) == rolled_dice_pool_target
