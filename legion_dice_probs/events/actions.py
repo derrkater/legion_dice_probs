@@ -1,6 +1,7 @@
 from typing import Optional
 
 from legion_dice_probs.events import convert_symbols as conv_syms
+from legion_dice_probs.events import convert_surge_with_tokens as conv_srge_wtok
 from legion_dice_probs.events import count_symbols as count_syms
 from legion_dice_probs.events import roll as rll
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
@@ -28,21 +29,33 @@ convert_all_surges_to_block = conv_syms.ConvertSymbols(
     )
 )
 
-surge_token_attack = conv_syms.ConvertSymbols(
-    conversion_policy=conv_pol.get_conversion_policy_attack(
-        convertible_symbols=(sym.Surge,),
-        conversion_target=sym.Hit(),
-    ),
-    conversion_limit=1,
-)
 
-surge_token_defence = conv_syms.ConvertSymbols(
-    conversion_policy=conv_pol.get_conversion_policy_defence(
-        convertible_symbols=(sym.Surge,),
-        conversion_target=sym.Block(),
-    ),
-    conversion_limit=1,
-)
+def get_use_surge_tokens_attack(k: Optional[int] = None):
+    return conv_srge_wtok.ConvertSurgeWithTokens(
+        conversion_policy=conv_pol.get_conversion_policy_attack(
+            convertible_symbols=(sym.Surge,),
+            conversion_target=sym.Hit(),
+        ),
+        conversion_limit=k,  # Specified by actual number of available tokens in stochastic object/state.
+    )
+
+
+use_surge_tokens_attack_1 = get_use_surge_tokens_attack(1)
+use_surge_tokens_attack = get_use_surge_tokens_attack()
+
+
+def get_use_surge_tokens_defence(k: Optional[int] = None):
+    return conv_srge_wtok.ConvertSurgeWithTokens(
+        conversion_policy=conv_pol.get_conversion_policy_defence(
+            convertible_symbols=(sym.Surge,),
+            conversion_target=sym.Block(),
+        ),
+        conversion_limit=k,  # Specified by actual number of available tokens in stochastic object/state.
+    )
+
+
+use_surge_tokens_defence_1 = get_use_surge_tokens_defence(1)
+use_surge_tokens_defence = get_use_surge_tokens_defence()
 
 
 def get_critical(k: int):
