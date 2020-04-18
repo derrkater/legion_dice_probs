@@ -37,6 +37,9 @@ class DicePoolAttack(dce.DicePool):
     def __hash__(self):
         return super().__hash__() + hash(self.n_aim_tokens) + hash(self.n_surge_tokens)
 
+    def __repr__(self):
+        return f'surge:{self.n_surge_tokens},aim:{self.n_aim_tokens},{super().__repr__()}'
+
     @classmethod
     def from_dice_list(
             cls,
