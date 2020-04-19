@@ -2,7 +2,7 @@ import fractions
 
 import pytest
 
-from legion_dice_probs.events import actions
+from legion_dice_probs import actions
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
