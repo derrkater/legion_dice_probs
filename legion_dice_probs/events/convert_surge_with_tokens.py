@@ -57,6 +57,7 @@ class ConvertSurgeWithTokens(conv_syms.ConvertSymbols):
         if isinstance(object_, dce.RolledDicePool):
             return object_.get_probability_distribution()
 
+        # TODO: remove DicePoolAttack
         if isinstance(object_, dce_att.DicePoolAttack):
             raise NotImplementedError
 

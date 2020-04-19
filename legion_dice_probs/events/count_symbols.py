@@ -3,9 +3,11 @@ import fractions
 from typing import Union
 
 from legion_dice_probs.stochastic_objects import dice_pool as dce
+from legion_dice_probs.stochastic_objects import dice_pool_attack as dce_att
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
 from legion_dice_probs.stochastic_states import symbols as syms
+from legion_dice_probs.stochastic_states import symbols_attack as syms_att
 
 from prob_dist_api import event
 from prob_dist_api import probability_distribution as pd
@@ -32,10 +34,20 @@ class CountSymbols(event.Event):
             return object_
         if isinstance(object_, dse.RolledDouse):
             return syms.Symbols.from_symbols_list([object_.symbol])
+
         if isinstance(object_, dce.RolledDicePool):
-            return syms.Symbols.from_symbols_list(
-                symbols_list=[rolled_douse.symbol for rolled_douse in object_.rolled_dice_counter.elements()],
-            )
+            symbols_list = [rolled_douse.symbol for rolled_douse in object_.rolled_dice_counter.elements()]
+
+            if isinstance(object_, dce_att.RolledDicePoolAttack):
+                return syms_att.SymbolsAttack.from_symbols_list(
+                    symbols_list=symbols_list,
+                    n_surge_tokens=object_.n_surge_tokens,
+                    n_aim_tokens=object_.n_aim_tokens,
+                )
+            else:
+                return syms.Symbols.from_symbols_list(
+                    symbols_list=symbols_list,
+                )
         if isinstance(object_, st_object.StochasticObject):
             prob_dist = object_.get_probability_distribution()
             prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))

@@ -20,6 +20,7 @@ from typing import Union
 
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
 from legion_dice_probs.stochastic_objects import dice_pool as dce
+from legion_dice_probs.stochastic_objects import dice_pool_attack as dce_att
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
 from legion_dice_probs.stochastic_states import symbols as syms
@@ -122,7 +123,14 @@ class ConvertSymbols(event.Event):
                 symbol_converted = self.on(rolled_douse) if self.can_convert else rolled_douse
                 rolled_dice_converted.append(symbol_converted)
 
-            return dce.RolledDicePool.from_rolled_dice_list(rolled_dice_converted)
+            if isinstance(object_, dce_att.RolledDicePoolAttack):
+                return dce_att.RolledDicePoolAttack.from_rolled_dice_list(
+                    rolled_dice_list=rolled_dice_converted,
+                    n_surge_tokens=object_.n_surge_tokens,
+                    n_aim_tokens=object_.n_aim_tokens,
+                )
+            else:
+                return dce.RolledDicePool.from_rolled_dice_list(rolled_dice_converted)
 
         if isinstance(object_, st_object.StochasticObject):
             prob_dist = object_.get_probability_distribution()
