@@ -1,5 +1,3 @@
-import collections
-import fractions
 from typing import Union
 
 from legion_dice_probs.stochastic_objects import dice_pool as dce
@@ -8,7 +6,6 @@ from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
 from legion_dice_probs.stochastic_states import symbols as syms
 from legion_dice_probs.stochastic_states import symbols_attack as syms_att
-
 from prob_dist_api import event
 from prob_dist_api import probability_distribution as pd
 from prob_dist_api import stochastic_object as st_object
@@ -16,9 +13,11 @@ from prob_dist_api import stochastic_state as st_state
 
 
 class CountSymbols(event.Event):
-    @classmethod
+    def copy(self) -> "CountSymbols":
+        return self.__class__()
+
     def on(
-            cls,
+            self,
             object_: Union[
                 st_state.StochasticState,
                 st_object.StochasticObject,
@@ -48,19 +47,5 @@ class CountSymbols(event.Event):
                 return syms.Symbols.from_symbols_list(
                     symbols_list=symbols_list,
                 )
-        if isinstance(object_, st_object.StochasticObject):
-            prob_dist = object_.get_probability_distribution()
-            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-            for state, prob in prob_dist.as_dict.items():
-                prob_dist_after[cls.on(state)] += prob
 
-            return pd.ProbabilityDistribution(prob_dist_after)
-
-        if isinstance(object_, pd.ProbabilityDistribution):
-            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-            for state, prob in object_.as_dict.items():
-                prob_dist_after[cls.on(state)] += prob
-
-            return pd.ProbabilityDistribution(prob_dist_after)
-
-        raise NotImplementedError(f'{type(object_)} is not supported.')
+        return super().on(object_)

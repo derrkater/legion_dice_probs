@@ -9,7 +9,7 @@ from legion_dice_probs.tests.stubs import Douse1, Douse2, Sym1, Sym2
 
 def test_count_single_symbol():
     symbol = Sym1()
-    assert CountSymbols.on(symbol) == syms.Symbols.from_symbols_list([Sym1()])
+    assert CountSymbols().on(symbol) == syms.Symbols.from_symbols_list([Sym1()])
 
 
 def test_count_symbols():
@@ -20,7 +20,7 @@ def test_count_symbols():
             Sym2(),
         ]
     )
-    assert symbols == CountSymbols.on(symbols)
+    assert symbols == CountSymbols().on(symbols)
 
 
 def test_count_single_rolled_douse():
@@ -28,7 +28,7 @@ def test_count_single_rolled_douse():
         douse=Douse1(),
         symbol=Sym1(),
     )
-    assert CountSymbols.on(rolled_douse) == syms.Symbols.from_symbols_list([Sym1()])
+    assert CountSymbols().on(rolled_douse) == syms.Symbols.from_symbols_list([Sym1()])
 
 
 def test_count_rolled_dice():
@@ -55,7 +55,7 @@ def test_count_rolled_dice():
             Sym2(),
         ]
     )
-    assert CountSymbols.on(rolled_dice_pool) == symbols
+    assert CountSymbols().on(rolled_dice_pool) == symbols
 
 
 def test_count_single_douse():
@@ -65,7 +65,7 @@ def test_count_single_douse():
             Sym1(),
         ]
     )
-    assert CountSymbols.on(douse).as_dict[symbols] == fractions.Fraction(2, 3)
+    assert CountSymbols().on(douse).as_dict[symbols] == fractions.Fraction(2, 3)
 
 
 def test_count_dice_pool():
@@ -83,4 +83,4 @@ def test_count_dice_pool():
             Sym1(),
         ]
     )
-    assert CountSymbols.on(dice_pool).as_dict[symbols] == fractions.Fraction(4, 27)
+    assert CountSymbols().on(dice_pool).as_dict[symbols] == fractions.Fraction(4, 27)

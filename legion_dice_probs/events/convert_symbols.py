@@ -132,19 +132,4 @@ class ConvertSymbols(event.Event):
             else:
                 return dce.RolledDicePool.from_rolled_dice_list(rolled_dice_converted)
 
-        if isinstance(object_, st_object.StochasticObject):
-            prob_dist = object_.get_probability_distribution()
-            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-            for state, prob in prob_dist.as_dict.items():
-                prob_dist_after[self.copy().on(state)] += prob
-
-            return pd.ProbabilityDistribution(prob_dist_after)
-
-        if isinstance(object_, pd.ProbabilityDistribution):
-            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-            for state, prob in object_.as_dict.items():
-                prob_dist_after[self.copy().on(state)] += prob
-
-            return pd.ProbabilityDistribution(prob_dist_after)
-
-        raise NotImplementedError(f'{type(object_)} is not supported.')
+        return super().on(object_)

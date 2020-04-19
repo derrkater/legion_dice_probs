@@ -1,6 +1,3 @@
-import collections
-import fractions
-import functools
 import logging
 from typing import Union
 
@@ -9,7 +6,6 @@ from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
 from prob_dist_api import event as ev
 from prob_dist_api import probability_distribution as pd
-from prob_dist_api import probability_distribution_utils as pd_utils
 from prob_dist_api import stochastic_object as st_object
 
 
@@ -75,7 +71,8 @@ class Roll(ev.Event):
             )
             prob_dists_after = []
             for rolled_douse in rolled_dice_sorted:
-                rerolled_prob_dist = self.on(rolled_douse) if self.can_roll else rolled_douse.get_probability_distribution()
+                rerolled_prob_dist = self.on(rolled_douse) if self.can_roll else \
+                    rolled_douse.get_probability_distribution()
                 prob_dists_after.append(rerolled_prob_dist)
 
             # TODO: rethink if this logic should be implemented either as part of DicePool.from_dice_list or
@@ -87,21 +84,4 @@ class Roll(ev.Event):
 
             return aggregated_dice_probability_distribution
 
-        if isinstance(object_, st_object.StochasticObject):
-            prob_dist = object_.get_probability_distribution()
-            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-            for state, prob in prob_dist.as_dict.items():
-                for state_after, prob_after in self.copy().on(state).as_dict.items():
-                    prob_dist_after[state_after] += prob * prob_after
-
-            return pd.ProbabilityDistribution(prob_dist_after)
-
-        if isinstance(object_, pd.ProbabilityDistribution):
-            prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-            for state, prob in object_.as_dict.items():
-                for state_after, prob_after in self.copy().on(state).as_dict.items():
-                    prob_dist_after[state_after] += prob * prob_after
-
-            return pd.ProbabilityDistribution(prob_dist_after)
-
-        raise NotImplementedError(f'{type(object_)} is not supported.')
+        return super().on(object_)
