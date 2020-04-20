@@ -73,7 +73,9 @@ class Roll(ev.Event):
             for rolled_douse in rolled_dice_sorted:
                 rerolled_prob_dist = self.on(rolled_douse) if self.can_roll else \
                     rolled_douse.get_probability_distribution()
-                prob_dists_after.append(rerolled_prob_dist)
+                prob_dists_after.append(
+                    dce.transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(rerolled_prob_dist)
+                )
 
             # TODO: rethink if this logic should be implemented either as part of DicePool.from_dice_list or
             #  RolledDicePool.aggregate_rolled_dice. Former would extend signature with RolledDouse and latter with

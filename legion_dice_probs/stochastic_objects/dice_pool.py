@@ -1,5 +1,7 @@
 import collections
+import fractions
 import functools
+import operator
 import pprint
 from typing import Counter
 from typing import List
@@ -14,14 +16,41 @@ from prob_dist_api import stochastic_object as st_object
 from prob_dist_api import stochastic_state as st_state
 
 
+def transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
+        probability_distribution: pd.ProbabilityDistribution,
+):
+    prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
+    for rolled_douse, prob in probability_distribution.as_dict.items():
+        prob_dist_after[
+            RolledDicePool.from_rolled_dice_list([rolled_douse])
+        ] += prob
+
+    return pd.ProbabilityDistribution(prob_dist_after)
+
+
 class DicePool(st_object.StochasticObject):
+
+    @classmethod
+    def from_douse(
+            cls,
+            douse: dse.Douse,
+    ) -> "DicePool":
+        return cls(
+            probability_distribution=transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
+                probability_distribution=douse.get_probability_distribution(),
+            ),
+        )
 
     @classmethod
     def from_dice_list(
             cls,
             dice_list: List[dse.Douse],
     ) -> "DicePool":
-        dice_probability_distributions = [douse.get_probability_distribution() for douse in dice_list]
+        if len(dice_list) == 1:
+            return cls.from_douse(dice_list[0])
+        dice_probability_distributions = [
+            cls.from_douse(douse).get_probability_distribution() for douse in dice_list
+        ]
         aggregated_dice_probability_distribution = RolledDicePool.aggregate_dice_probability_distributions(
             dice_probability_distributions
         )
@@ -65,10 +94,26 @@ class RolledDicePool(st_state.StochasticState):
         return functools.reduce(
             functools.partial(
                 pd_utils.aggregate_probability_distributions,
-                aggregate_function=cls.aggregate_rolled_dice
+                aggregate_function=operator.add,
             ),
             probability_distributions,
         )
+
+    def __add__(self, other):
+        if isinstance(other, dse.RolledDouse):
+            return self.from_rolled_dice_list(
+                list(self.rolled_dice_counter.elements()) + [other]
+            )
+        elif isinstance(other, RolledDicePool):
+            return self.from_rolled_dice_list(
+                list(self.rolled_dice_counter.elements()) +
+                list(other.rolled_dice_counter.elements())
+            )
+        else:
+            return TypeError(f'unsupported operand type(s) for +: {type(self)} and {type(other)}')
+
+    def __radd__(self, other):
+        return self.__add__(other)
 
     @classmethod
     def aggregate_rolled_dice(
