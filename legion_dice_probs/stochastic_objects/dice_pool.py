@@ -19,25 +19,12 @@ from prob_dist_api import stochastic_state as st_state
 class DicePool(st_object.StochasticObject):
 
     @classmethod
-    def from_douse(
-            cls,
-            douse: dse.Douse,
-    ) -> "DicePool":
-        return cls(
-            probability_distribution=transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
-                probability_distribution=douse.get_probability_distribution(),
-            ),
-        )
-
-    @classmethod
     def from_dice_list(
             cls,
             dice_list: List[dse.Douse],
     ) -> "DicePool":
-        if len(dice_list) == 1:
-            return cls.from_douse(dice_list[0])
         dice_probability_distributions = [
-            cls.from_douse(douse).get_probability_distribution() for douse in dice_list
+            douse.get_probability_distribution() for douse in dice_list
         ]
         aggregated_dice_probability_distribution = RolledDicePool.aggregate_dice_probability_distributions(
             dice_probability_distributions
