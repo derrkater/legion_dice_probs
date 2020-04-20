@@ -23,12 +23,6 @@ class DicePool(st_object.StochasticObject):
         super().__init__(probability_distribution)
         self.dice_list: List[dse.Douse] = dice_list
 
-    def __eq__(self, other):
-        return self.as_dice_counter == other.as_dice_counter
-
-    def __hash__(self):
-        return hash(self.as_dice_frozendict) + hash(self.get_probability_distribution())
-
     @classmethod
     def from_dice_list(
             cls,
@@ -49,45 +43,6 @@ class DicePool(st_object.StochasticObject):
                 probability_distribution=aggregated_dice_probability_distribution,
                 dice_list=dice_list,
             )
-
-    @property
-    def as_dice_counter(self):
-        return collections.Counter(self.dice_list)
-
-    @property
-    def as_dice_frozendict(self):
-        return frozendict.frozendict(self.as_dice_counter)
-
-    def add_douse(self, douse: dse.Douse) -> None:
-        self.dice_list.append(douse)
-
-    @classmethod
-    def aggregate_dice(
-            cls,
-            dice_obj_1: Union[dse.Douse, "DicePool"],
-            dice_obj_2: Union[dse.Douse, "DicePool"],
-    ) -> "DicePool":
-        if isinstance(dice_obj_1, dse.Douse) and isinstance(dice_obj_2, dse.Douse):
-            return cls.from_dice_list(
-                [
-                    dice_obj_1,
-                    dice_obj_2
-                ]
-            )
-        if isinstance(dice_obj_1, cls) and isinstance(dice_obj_2, cls):
-            return cls(
-                probability_distribution=pd_utils.aggregate_probability_distributions(
-                    pd_1=dice_obj_1.get_probability_distribution(),
-                    pd_2=dice_obj_2.get_probability_distribution(),
-                    aggregate_function=NotImplemented
-                ),
-                dice_list=dice_obj_1.dice_list + dice_obj_2.dice_list,
-            )
-        if isinstance(dice_obj_1, cls) and isinstance(dice_obj_2, dse.Douse):
-            raise NotImplementedError
-        if isinstance(dice_obj_2, cls) and isinstance(dice_obj_1, dse.Douse):
-            raise NotImplementedError
-        raise ValueError
 
 
 class RolledDicePool(st_state.StochasticState):

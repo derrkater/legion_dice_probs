@@ -219,4 +219,3 @@ def test_dice_pool__should_be_created_from_list():
                    ]
                )
            ] == fractions.Fraction(4, 27), 'Proper probability calculation'
-    assert dice_pool.as_dice_counter[Douse2()] == 1
