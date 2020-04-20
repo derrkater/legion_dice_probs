@@ -28,21 +28,14 @@ class DicePool(st_object.StochasticObject):
             cls,
             dice_list: List[dse.Douse],
     ) -> "DicePool":
-        if len(dice_list) == 1:
-            # TODO: this probably doesn't work right as it retuns pd on douse not rolled_dice_pool.
-            return cls(
-                probability_distribution=dice_list[0].get_probability_distribution(),
-                dice_list=dice_list,
-            )
-        else:
-            dice_probability_distributions = [douse.get_probability_distribution() for douse in dice_list]
-            aggregated_dice_probability_distribution = RolledDicePool.aggregate_dice_probability_distributions(
-                dice_probability_distributions
-            )
-            return cls(
-                probability_distribution=aggregated_dice_probability_distribution,
-                dice_list=dice_list,
-            )
+        dice_probability_distributions = [douse.get_probability_distribution() for douse in dice_list]
+        aggregated_dice_probability_distribution = RolledDicePool.aggregate_dice_probability_distributions(
+            dice_probability_distributions
+        )
+        return cls(
+            probability_distribution=aggregated_dice_probability_distribution,
+            dice_list=dice_list,
+        )
 
 
 class RolledDicePool(st_state.StochasticState):
