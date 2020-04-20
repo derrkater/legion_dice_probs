@@ -16,18 +16,6 @@ from prob_dist_api import stochastic_object as st_object
 from prob_dist_api import stochastic_state as st_state
 
 
-def transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
-        probability_distribution: pd.ProbabilityDistribution,
-):
-    prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
-    for rolled_douse, prob in probability_distribution.as_dict.items():
-        prob_dist_after[
-            RolledDicePool.from_rolled_dice_list([rolled_douse])
-        ] += prob
-
-    return pd.ProbabilityDistribution(prob_dist_after)
-
-
 class DicePool(st_object.StochasticObject):
 
     @classmethod
@@ -91,12 +79,17 @@ class RolledDicePool(st_state.StochasticState):
             cls,
             probability_distributions: List[pd.ProbabilityDistribution],
     ):
+        probability_distributions_of_rolled_dice_pools = [
+            transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
+                probability_distribution=prob_dist,
+            ) for prob_dist in probability_distributions
+        ]
         return functools.reduce(
             functools.partial(
                 pd_utils.aggregate_probability_distributions,
                 aggregate_function=operator.add,
             ),
-            probability_distributions,
+            probability_distributions_of_rolled_dice_pools,
         )
 
     def __add__(self, other):
@@ -143,3 +136,19 @@ class RolledDicePool(st_state.StochasticState):
                 rolled_dice_obj_1
             )
         raise ValueError
+
+
+def transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
+        probability_distribution: pd.ProbabilityDistribution,
+        rolled_dice_pool_cls: type(RolledDicePool) = RolledDicePool,
+):
+    prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
+    for stochastic_state, prob in probability_distribution.as_dict.items():
+        if isinstance(stochastic_state, dse.RolledDouse):
+            prob_dist_after[
+                rolled_dice_pool_cls.from_rolled_dice_list([stochastic_state])
+            ] += prob
+        else:
+            prob_dist_after[stochastic_state] += prob
+
+    return pd.ProbabilityDistribution(prob_dist_after)
