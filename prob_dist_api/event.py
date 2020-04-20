@@ -28,6 +28,7 @@ class Event:
             return self.on(prob_dist)
 
         if isinstance(object_, pd.ProbabilityDistribution):
+            # TODO: This part of code is actually aggregation of prob dists, which mean it could be much better written.
             prob_dist_after = collections.defaultdict(lambda: fractions.Fraction(0))
             for state, prob in object_.as_dict.items():
                 state_after_event = self.copy().on(state)

@@ -15,21 +15,6 @@ from prob_dist_api import stochastic_state as st_state
 
 
 class ConvertSurgeWithTokens(conv_syms.ConvertSymbols):
-    # def mark_conversion(
-    #         self,
-    #         rolled_dice_pool_attack: Optional[dce_att.RolledDicePoolAttack] = None,
-    # ):
-    #     if not rolled_dice_pool_attack.n_surge_tokens > 0:
-    #         logging.warning(f'Not tokens left in {rolled_dice_pool_attack}, but conversion is still marked.')
-    #     rolled_dice_pool_attack.n_surge_tokens -= 1
-    #
-    #     super().mark_conversion()
-
-    # def __init__(self, conversion_policy: conv_pol.ConversionPolicy):
-    #     super().__init__(
-    #         conversion_policy,
-    #         conversion_limit=None,
-    #     )
 
     def on(
             self,
