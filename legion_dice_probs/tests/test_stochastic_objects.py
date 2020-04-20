@@ -200,7 +200,6 @@ def test_dice_pool__should_be_created_from_list():
         Douse2(),
     ]
     dice_pool = dce.DicePool.from_dice_list(dice_list)
-    assert dice_pool.dice_list == dice_list
     assert dice_pool.get_probability_distribution().as_dict[
                dce.RolledDicePool.from_rolled_dice_list(
                    rolled_dice_list=[

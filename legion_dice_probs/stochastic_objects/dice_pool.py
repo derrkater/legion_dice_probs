@@ -15,13 +15,6 @@ from prob_dist_api import stochastic_state as st_state
 
 
 class DicePool(st_object.StochasticObject):
-    def __init__(
-            self,
-            probability_distribution: pd.ProbabilityDistribution,
-            dice_list: List[dse.Douse],
-    ):
-        super().__init__(probability_distribution)
-        self.dice_list: List[dse.Douse] = dice_list
 
     @classmethod
     def from_dice_list(
@@ -34,7 +27,6 @@ class DicePool(st_object.StochasticObject):
         )
         return cls(
             probability_distribution=aggregated_dice_probability_distribution,
-            dice_list=dice_list,
         )
 
 
