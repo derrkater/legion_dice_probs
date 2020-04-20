@@ -77,32 +77,32 @@ def test_rolled_douse__should_implement_hash():
     ) == 3
 
 
-def test_aggregate_rolled_dice__2_dice_same():
-    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        dse.RolledDouse(
-            douse=Douse1(),
-            symbol=Sym1(),
-        ),
-        dse.RolledDouse(
-            douse=Douse1(),
-            symbol=Sym1(),
-        ),
-    )
-    assert len(rolled_dice.rolled_dice_counter) == 1
+# def test_aggregate_rolled_dice__2_dice_same():
+#     rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
+#         dse.RolledDouse(
+#             douse=Douse1(),
+#             symbol=Sym1(),
+#         ),
+#         dse.RolledDouse(
+#             douse=Douse1(),
+#             symbol=Sym1(),
+#         ),
+#     )
+#     assert len(rolled_dice.rolled_dice_counter) == 1
 
 
-def test_aggregate_rolled_dice__2_dice_different():
-    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        dse.RolledDouse(
-            douse=Douse1(),
-            symbol=Sym1(),
-        ),
-        dse.RolledDouse(
-            douse=Douse1(),
-            symbol=Sym2(),
-        ),
-    )
-    assert len(rolled_dice.rolled_dice_counter) == 2
+# def test_aggregate_rolled_dice__2_dice_different():
+#     rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
+#         dse.RolledDouse(
+#             douse=Douse1(),
+#             symbol=Sym1(),
+#         ),
+#         dse.RolledDouse(
+#             douse=Douse1(),
+#             symbol=Sym2(),
+#         ),
+#     )
+#     assert len(rolled_dice.rolled_dice_counter) == 2
 
 
 def test_add_rolled_dice_pool__dice_pool_and_same_douse():

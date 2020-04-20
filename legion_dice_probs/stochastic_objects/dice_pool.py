@@ -95,35 +95,6 @@ class RolledDicePool(st_state.StochasticState):
     def __radd__(self, other):
         return self.__add__(other)
 
-    @classmethod
-    def aggregate_rolled_dice(
-            cls,
-            rolled_dice_obj_1: Union[dse.RolledDouse, "RolledDicePool"],
-            rolled_dice_obj_2: Union[dse.RolledDouse, "RolledDicePool"],
-    ) -> "RolledDicePool":
-        if isinstance(rolled_dice_obj_1, dse.RolledDouse) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
-            return cls.from_rolled_dice_list(
-                [
-                    rolled_dice_obj_1,
-                    rolled_dice_obj_2,
-                ]
-            )
-        if isinstance(rolled_dice_obj_1, cls) and isinstance(rolled_dice_obj_2, cls):
-            return cls.from_rolled_dice_list(
-                list(rolled_dice_obj_1.rolled_dice_counter.elements()) +
-                list(rolled_dice_obj_2.rolled_dice_counter.elements())
-            )
-        if isinstance(rolled_dice_obj_1, cls) and isinstance(rolled_dice_obj_2, dse.RolledDouse):
-            return cls.from_rolled_dice_list(
-                list(rolled_dice_obj_1.rolled_dice_counter.elements()) + [rolled_dice_obj_2]
-            )
-        if isinstance(rolled_dice_obj_2, cls) and isinstance(rolled_dice_obj_1, dse.RolledDouse):
-            return cls.aggregate_rolled_dice(
-                rolled_dice_obj_2,
-                rolled_dice_obj_1
-            )
-        raise ValueError
-
 
 def transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(
         probability_distribution: pd.ProbabilityDistribution,
