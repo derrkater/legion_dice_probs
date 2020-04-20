@@ -2,6 +2,7 @@ import collections
 import pprint
 from typing import Counter
 from typing import List
+from typing import Optional
 
 import frozendict as frozendict
 
@@ -14,9 +15,9 @@ class Tokens(st_state.StochasticState):
 
     def __init__(
             self,
-            tokens_counter: Counter[tok.Token],
+            tokens_counter: Optional[Counter[tok.Token]] = None,
     ):
-        self._tokens_counter: Counter[tok.Token] = tokens_counter
+        self._tokens_counter: Counter[tok.Token] = tokens_counter or collections.Counter([])
 
     @property
     def tokens_list(self) -> List[tok.Token]:
