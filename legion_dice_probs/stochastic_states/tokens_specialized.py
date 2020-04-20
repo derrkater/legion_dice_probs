@@ -21,7 +21,7 @@ class TokensAttack(toks.Tokens):
             n_aim: int = 0,
             n_surge: int = 0,
     ):
-        return cls.from_symbols_list(
+        return cls.from_tokens_list(
             [
                 *[AimToken() for _ in range(n_aim)],
                 *[SurgeToken() for _ in range(n_surge)],
@@ -36,7 +36,7 @@ class TokensDefence(toks.Tokens):
             n_dodge: int = 0,
             n_surge: int = 0,
     ):
-        return cls.from_symbols_list(
+        return cls.from_tokens_list(
             [
                 *[DodgeToken() for _ in range(n_dodge)],
                 *[SurgeToken() for _ in range(n_surge)],

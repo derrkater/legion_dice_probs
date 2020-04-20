@@ -40,8 +40,8 @@ class Tokens(st_state.StochasticState):
         return hash(self.as_frozendict)
 
     @classmethod
-    def from_symbols_list(
+    def from_tokens_list(
             cls,
-            symbols_list: List[tok.Token],
+            tokens_list: List[tok.Token],
     ):
-        return cls(collections.Counter(symbols_list))
+        return cls(collections.Counter(tokens_list))
