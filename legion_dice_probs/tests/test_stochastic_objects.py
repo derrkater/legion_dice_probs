@@ -105,59 +105,53 @@ def test_aggregate_rolled_dice__2_dice_different():
     assert len(rolled_dice.rolled_dice_counter) == 2
 
 
-def test_aggregate_rolled_dice__dice_pool_and_same_douse():
+def test_add_rolled_dice_pool__dice_pool_and_same_douse():
     appended_douse = dse.RolledDouse(
         douse=Douse1(),
         symbol=Sym2(),
     )
-    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        dce.RolledDicePool(
-            rolled_dice_counter=collections.Counter(
-                [
-                    dse.RolledDouse(
-                        douse=Douse1(),
-                        symbol=Sym1(),
-                    ),
-                    dse.RolledDouse(
-                        douse=Douse1(),
-                        symbol=Sym2(),
-                    ),
-                ]
-            )
-        ),
-        appended_douse,
-    )
+    rolled_dice = dce.RolledDicePool(
+        rolled_dice_counter=collections.Counter(
+            [
+                dse.RolledDouse(
+                    douse=Douse1(),
+                    symbol=Sym1(),
+                ),
+                dse.RolledDouse(
+                    douse=Douse1(),
+                    symbol=Sym2(),
+                ),
+            ]
+        )
+    ) + appended_douse
     assert len(rolled_dice.rolled_dice_counter) == 2
     assert rolled_dice.rolled_dice_counter[appended_douse] == 2
 
 
-def test_aggregate_rolled_dice__dice_pool_and_new_douse():
+def test_add_rolled_dice_pool__dice_pool_and_new_douse():
     appended_douse = dse.RolledDouse(
         douse=Douse2(),
         symbol=Sym2(),
     )
-    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        dce.RolledDicePool(
-            rolled_dice_counter=collections.Counter(
-                [
-                    dse.RolledDouse(
-                        douse=Douse1(),
-                        symbol=Sym1(),
-                    ),
-                    dse.RolledDouse(
-                        douse=Douse1(),
-                        symbol=Sym2(),
-                    ),
-                ]
-            )
-        ),
-        appended_douse,
-    )
+    rolled_dice = dce.RolledDicePool(
+        rolled_dice_counter=collections.Counter(
+            [
+                dse.RolledDouse(
+                    douse=Douse1(),
+                    symbol=Sym1(),
+                ),
+                dse.RolledDouse(
+                    douse=Douse1(),
+                    symbol=Sym2(),
+                ),
+            ]
+        )
+    ) + appended_douse
     assert len(rolled_dice.rolled_dice_counter) == 3
     assert rolled_dice.rolled_dice_counter[appended_douse] == 1
 
 
-def test_aggregate_rolled_dice__dice_pools():
+def test_add_rolled_dice_pool__dice_pools():
     rolled_dice_pool_1 = dce.RolledDicePool(
         rolled_dice_counter=collections.Counter(
             [
@@ -186,10 +180,7 @@ def test_aggregate_rolled_dice__dice_pools():
             ]
         )
     )
-    rolled_dice = dce.RolledDicePool.aggregate_rolled_dice(
-        rolled_dice_pool_1,
-        rolled_dice_pool_2,
-    )
+    rolled_dice = rolled_dice_pool_1 + rolled_dice_pool_2
     assert len(rolled_dice.rolled_dice_counter) == 3
 
 
