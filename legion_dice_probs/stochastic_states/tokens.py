@@ -46,3 +46,6 @@ class Tokens(st_state.StochasticState):
             tokens_list: List[tok.Token],
     ):
         return cls(collections.Counter(tokens_list))
+
+    def copy(self):
+        return self.__class__(collections.Counter(self.tokens_counter))

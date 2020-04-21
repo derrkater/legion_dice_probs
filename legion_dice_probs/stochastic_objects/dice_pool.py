@@ -81,9 +81,9 @@ class RolledDicePool(st_state.StochasticState):
 
     def __add__(self, other):
         if isinstance(other, dse.RolledDouse):
-            return self.from_rolled_dice_list(
-                list(self.rolled_dice_counter.elements()) + [other]
-            )
+            new_rolled_dice_pool = self.copy()
+            new_rolled_dice_pool.append_rolled_douse(other)
+            return new_rolled_dice_pool
         elif isinstance(other, RolledDicePool):
             return self.from_rolled_dice_list(
                 list(self.rolled_dice_counter.elements()) +
@@ -94,6 +94,14 @@ class RolledDicePool(st_state.StochasticState):
 
     def __radd__(self, other):
         return self.__add__(other)
+
+    def append_rolled_douse(self, douse: dse.RolledDouse) -> None:
+        self.rolled_dice_counter[douse] += 1
+
+    def copy(self) -> "RolledDicePool":
+        return self.__class__(
+            rolled_dice_counter=collections.Counter(self.rolled_dice_counter)
+        )
 
 
 def transform_rolled_douse_prob_dist_to_rolled_dice_pool_prob_dist(

@@ -44,3 +44,6 @@ class Symbols(st_state.StochasticState):
             symbols_list: List[sym.Symbol],
     ):
         return cls(collections.Counter(symbols_list))
+
+    def copy(self):
+        return self.__class__(collections.Counter(self.symbols_counter))
