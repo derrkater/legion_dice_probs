@@ -40,6 +40,12 @@ class Tokens(st_state.StochasticState):
     def __hash__(self):
         return hash(self.as_frozendict)
 
+    def __len__(self):
+        return len(self.tokens_list)
+
+    def __add__(self, other):
+        return self.__class__(self.tokens_counter + other.tokens_counter)
+
     @classmethod
     def from_tokens_list(
             cls,

@@ -85,10 +85,13 @@ class RolledDicePool(st_state.StochasticState):
             new_rolled_dice_pool.append_rolled_douse(other)
             return new_rolled_dice_pool
         elif isinstance(other, RolledDicePool):
-            return self.from_rolled_dice_list(
-                list(self.rolled_dice_counter.elements()) +
-                list(other.rolled_dice_counter.elements())
-            )
+            if type(other) == RolledDicePool:
+                return self.from_rolled_dice_list(
+                    list(self.rolled_dice_counter.elements()) +
+                    list(other.rolled_dice_counter.elements())
+                )
+            else:
+                return other.__radd__(self)
         else:
             return TypeError(f'unsupported operand type(s) for +: {type(self)} and {type(other)}')
 
