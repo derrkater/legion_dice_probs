@@ -1,5 +1,6 @@
 import collections
 import fractions
+import operator
 import pprint
 from typing import Counter
 from typing import Dict
@@ -9,7 +10,6 @@ from typing import List
 import frozendict
 
 
-# todo: implement get_n_best
 # todo: implement percentage output.
 class ProbabilityDistribution:
 
@@ -69,6 +69,18 @@ class ProbabilityDistribution:
             events_list: List[Hashable],
     ) -> "ProbabilityDistribution":
         return cls.from_events_counter(collections.Counter(events_list))
+
+    def get_best(
+            self,
+            n: int = 1,
+            as_float: bool = True,
+    ):
+        dict_items = self.as_dict_with_floats.items() if as_float else self.as_dict.items()
+        return sorted(
+            dict_items,
+            key=operator.itemgetter(1),
+            reverse=True,
+        )[:n]
 
 
 class ProbabilityNotEqualOne(ValueError):

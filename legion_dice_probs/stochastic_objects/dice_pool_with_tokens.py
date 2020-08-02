@@ -6,6 +6,7 @@ from typing import Optional
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import tokens as toks
+from prob_dist_api import probability_distribution as pd
 
 
 class DicePoolWithTokens(dce.DicePool):
@@ -17,13 +18,15 @@ class DicePoolWithTokens(dce.DicePool):
             tokens: toks.Tokens,
     ) -> "DicePoolWithTokens":
         dice_pool = super().from_dice_list(dice_list)
-        probability_distribution = {
-            RolledDicePoolWithTokens.from_rolled_dice_pool(
-                rolled_dice_pool=rolled_dice_pool,
-                tokens=tokens.copy(),
-            )
-            for rolled_dice_pool, prob in dice_pool.get_probability_distribution().as_dict.items()
-        }
+        probability_distribution = pd.ProbabilityDistribution(
+            {
+                RolledDicePoolWithTokens.from_rolled_dice_pool(
+                    rolled_dice_pool=rolled_dice_pool,
+                    tokens=tokens.copy(),
+                ): prob
+                for rolled_dice_pool, prob in dice_pool.get_probability_distribution().as_dict.items()
+            }
+        )
         return cls(probability_distribution)
 
 
