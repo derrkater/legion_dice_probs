@@ -13,8 +13,6 @@ Calculate results
 surge to blank
 """
 
-import collections
-import fractions
 import logging
 from typing import Union
 

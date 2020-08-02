@@ -1,8 +1,5 @@
-import logging
-from typing import Optional
 from typing import Union
 
-from legion_dice_probs.events.tools import conversion_policy as conv_pol
 from legion_dice_probs.events import convert_symbols as conv_syms
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import dice_pool_attack as dce_att

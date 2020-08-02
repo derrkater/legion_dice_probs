@@ -5,7 +5,6 @@ import operator
 import pprint
 from typing import Counter
 from typing import List
-from typing import Union
 
 import frozendict
 

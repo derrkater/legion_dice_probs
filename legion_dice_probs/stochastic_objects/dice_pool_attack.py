@@ -1,10 +1,7 @@
-import collections
 import functools
 from typing import Counter
 from typing import List
 from typing import Union
-
-import frozendict
 
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import douse as dse
