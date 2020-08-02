@@ -2,6 +2,7 @@ from typing import List
 
 from legion_dice_probs.stochastic_objects import douse as dse
 from legion_dice_probs.stochastic_states import symbol as sym
+from legion_dice_probs.stochastic_states import token as tok
 
 
 class Sym1(sym.Symbol):
@@ -30,3 +31,11 @@ class Douse2(dse.Douse):
             Sym2(),
             Sym2(),
         ]
+
+
+class Tok1(tok.Token):
+    pass
+
+
+class Tok2(tok.Token):
+    pass

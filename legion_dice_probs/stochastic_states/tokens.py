@@ -55,3 +55,11 @@ class Tokens(st_state.StochasticState):
 
     def copy(self):
         return self.__class__(collections.Counter(self.tokens_counter))
+
+    def remove_token(self, token: tok.Token):
+        if self.tokens_counter[token] == 0:
+            raise KeyError(f'There are not tokens: {token} in {self}.')
+        self.tokens_counter[token] -= 1
+
+    def count_tokens(self, token: tok.Token) -> int:
+        return self.tokens_counter[token]
