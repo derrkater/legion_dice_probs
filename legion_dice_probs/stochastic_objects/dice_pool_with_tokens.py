@@ -18,6 +18,17 @@ class DicePoolWithTokens(dce.DicePool):
             tokens: toks.Tokens,
     ) -> "DicePoolWithTokens":
         dice_pool = super().from_dice_list(dice_list)
+        return cls.from_dice_pool(
+            dice_pool=dice_pool,
+            tokens=tokens,
+        )
+
+    @classmethod
+    def from_dice_pool(
+            cls,
+            dice_pool: dce.DicePool,
+            tokens: toks.Tokens,
+    ) -> "DicePoolWithTokens":
         probability_distribution = pd.ProbabilityDistribution(
             {
                 RolledDicePoolWithTokens.from_rolled_dice_pool(

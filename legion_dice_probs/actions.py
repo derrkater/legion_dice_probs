@@ -4,6 +4,7 @@ from legion_dice_probs.events import convert_symbols as conv_syms
 from legion_dice_probs.events import convert_surge_with_tokens as conv_srge_wtok
 from legion_dice_probs.events import count_symbols as count_syms
 from legion_dice_probs.events import roll as rll
+from legion_dice_probs.events import aim_reroll as aim_rerll
 from legion_dice_probs.events.tools import conversion_policy as conv_pol
 from legion_dice_probs.events.tools import roll_policy as rll_pol
 from legion_dice_probs.stochastic_states import symbol as sym
@@ -145,7 +146,17 @@ def get_attack_reroll(k: int):
     )
 
 
-aim = get_attack_reroll(2)
+def get_attack_reroll_aim_token(k: int):
+    return aim_rerll.AimReroll(
+        roll_policy=rll_pol.get_roll_policy_attack(
+            rollable_symbols=(sym.Blank, sym.Surge,),
+        ),
+        roll_limit=k,
+    )
+
+
+# aim = get_attack_reroll(2)
+aim = get_attack_reroll_aim_token(2)
 aim_precise_1 = get_attack_reroll(3)
 aim_precise_2 = get_attack_reroll(4)
 aim_precise_3 = get_attack_reroll(5)
@@ -184,3 +195,6 @@ convert_all_crits_to_hits_for_calculation = conv_syms.ConvertSymbols(
         conversion_target=sym.Hit(),
     )
 )
+
+
+# remove_tokens_for_cal

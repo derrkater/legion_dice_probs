@@ -5,6 +5,8 @@ from typing import List
 from prob_dist_api import probability_distribution as pd
 
 
+# TODO: remove stochastic object as unnecessary wrapper of probability distribution which can be fully defined by it's
+#  Stochastic states
 class StochasticObject(abc.ABC):
 
     def __init__(

@@ -81,7 +81,6 @@ class Roll(ev.Event):
             aggregated_dice_probability_distribution = object_.aggregate_dice_probability_distributions(
                 prob_dists_after
             )
-
             return aggregated_dice_probability_distribution
 
         return super().on(object_)

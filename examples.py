@@ -2,6 +2,7 @@ from pprint import pprint
 
 from legion_dice_probs import actions
 from legion_dice_probs.events import count_symbols as count
+from legion_dice_probs.events import aim_reroll
 from legion_dice_probs.stochastic_objects import attack_douse as att_dse
 from legion_dice_probs.stochastic_objects import dice_pool as dce
 from legion_dice_probs.stochastic_objects import dice_pool_with_tokens as dce_wtoks
@@ -112,10 +113,14 @@ if __name__ == '__main__':
         [
             att_dse.BlackAttackDouse(),
             att_dse.BlackAttackDouse(),
-            att_dse.BlackAttackDouse(),
-            att_dse.BlackAttackDouse(),
+            # att_dse.BlackAttackDouse(),
+            # att_dse.BlackAttackDouse(),
         ],
-        tokens=toks_spec.TokensAttack.from_attack_tokens(1),
+        tokens=toks_spec.TokensAttack.from_attack_tokens(n_aim=1),
     )
     print('rebel troopers')
+    pprint(count.CountSymbols().on(rebel_troopers).get_best(3))
+    rebel_troopers = actions.aim.on(rebel_troopers)
+    print('rebel troopers - after aim')
+    pprint(rebel_troopers)
     pprint(count.CountSymbols().on(rebel_troopers).get_best(3))
